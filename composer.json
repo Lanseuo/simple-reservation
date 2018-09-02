@@ -1,0 +1,19 @@
+{
+    "name": "lanseuo/simple-reservation",
+    "description": "This plugin makes reservations on your website very simple.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucas Hild",
+            "email": "contact@lucas-hild.de"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Inc\\": "./inc"
+        }
+    }
+}
