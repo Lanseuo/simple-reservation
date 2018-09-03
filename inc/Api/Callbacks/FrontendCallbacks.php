@@ -7,6 +7,23 @@
 // use Inc\Base\BaseController;
 
 class FrontendCallbacks {
+    function action() {
+        if ( ! isset($_POST['action']) ) return;
+
+        switch ($_POST['action']) {
+            case 'add_reservation':
+                $this->add_reservation(
+                    $_POST['room_id'],
+                    $_POST['date'],
+                    $_POST['time_id'],
+                    $_POST['description']
+                );
+                break;
+            default:
+                die('Action '.$_POST['action'].'was not found');
+        }
+    }
+
     function get_rooms() {
         global $wpdb;
 
@@ -29,9 +46,9 @@ class FrontendCallbacks {
         return $results ? $results[0] : null;
     }
 
-    static function add_reservation( $room_id, $date, $time_id, $description ) {
+    function add_reservation( $room_id, $date, $time_id, $description ) {
         global $wpdb;
-        $wpdb->insert(
+        $result = $wpdb->insert(
             $wpdb->prefix.'simple_reservation_reservations',
             [
                 'room_id'     => $room_id,
@@ -42,5 +59,7 @@ class FrontendCallbacks {
             ],
             [ '%d', '%s', '%d', '%s', '%d' ]
         );
+
+        return $result ? true : false;
     }
 }

@@ -1,6 +1,7 @@
 <?php
     require_once( plugin_dir_path( dirname( __FILE__, 1 ) )."/inc/Api/Callbacks/FrontendCallbacks.php" );
     $frontend_callbacks = new FrontendCallbacks();
+    $frontend_callbacks->action();
 
     $rooms = $frontend_callbacks->get_rooms();
 
@@ -68,6 +69,11 @@
                                     This is my hidden content! It will appear in ThickBox when the link is clicked.
                                 </p>
                                 <form method="post">
+                                    <input type="hidden" name="action" value="add_reservation">
+                                    <input type="hidden" name="room_id" value="'.$room->id.'">
+                                    <input type="hidden" name="date" value="'.$day['date'].'">
+                                    <input type="hidden" name="time_id" value="'.$room_time['id'].'">
+
                                     <table class="form-table">
                                         <tbody>
                                             <tr>
@@ -114,11 +120,6 @@
                             ';
                         }
                     ?>
-                        
-                        <!-- <div class="period reserved">
-                            <p><strong><php echo 'Name' ?></strong></p>
-                            <p><php echo 'Description' ?></p>
-                        </div> -->
                     <?php } ?>
                 <?php } ?>
             </div>
