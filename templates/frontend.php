@@ -51,13 +51,20 @@
                             <p><?php echo $room_time['description'] ?></p>
                     </div>          
                     <?php foreach ( $days as $day ) {
-                        $period = $frontend_callbacks->get_period( $room->id, $day['date'], $room_time['id'] );
-                        if ($period) {
+                        $reservation = $frontend_callbacks->get_reservation( $room->id, $day['date'], $room_time['id'] );
+                        if ($reservation) {
                             echo '
-                            <div class="period reserved">
-                                <p><strong>'.$period->user.'</strong></p>
-                                <p>'.$period->description.'</p>
-                            </div>
+                            <form class="period reserved deletable remove-style" method="post">
+                            <input type="hidden" name="action" value="delete_reservation">
+                            <input type="hidden" name="id" value="'.$reservation->id.'">
+                            <button type="submit">
+                                <div class="content">
+                                    <p><strong>'.$reservation->user.'</strong></p>
+                                    <p>'.$reservation->description.'</p>
+                                </div>
+                                <span class="delete-symbol dashicons dashicons-trash"></span>
+                            </button>
+                            </form>
                             ';
                         } else {
                             $thickbox_id = 'thickbox-'.$room->id.'-'.str_replace('.', '', $day['date']).'-'.$room_time['id'];
@@ -115,7 +122,7 @@
                             </div>
 
                             <a class="thickbox period free" href="#TB_inline?width=600&height=550&inlineId='.$thickbox_id.'">
-                                <span class="plus-symbol">+</span>
+                                <span class="add-symbol">+</span>
                             </a>
                             ';
                         }

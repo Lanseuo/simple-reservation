@@ -10,7 +10,7 @@ class FrontendCallbacks {
     function action() {
         if ( ! isset($_POST['action']) ) return;
 
-        switch ($_POST['action']) {
+        switch ( $_POST['action'] ) {
             case 'add_reservation':
                 $this->add_reservation(
                     $_POST['room_id'],
@@ -19,8 +19,11 @@ class FrontendCallbacks {
                     $_POST['description']
                 );
                 break;
+            case 'delete_reservation':
+                $this->delete_reservation( $_POST['id'] );
+                break;
             default:
-                die('Action '.$_POST['action'].'was not found');
+                die('Action "'.$_POST['action'].'" was not found');
         }
     }
 
@@ -30,7 +33,7 @@ class FrontendCallbacks {
         return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms", OBJECT );
     }
 
-    function get_period( $room_id, $date, $time_id ) {
+    function get_reservation( $room_id, $date, $time_id ) {
         global $wpdb;
 
         $results = $wpdb->get_results( "
@@ -58,6 +61,17 @@ class FrontendCallbacks {
                 'user_id'     => wp_get_current_user()->ID
             ],
             [ '%d', '%s', '%d', '%s', '%d' ]
+        );
+
+        return $result ? true : false;
+    }
+
+    function delete_reservation( $id ) {
+        global $wpdb;
+        $result = $wpdb->delete(
+            $wpdb->prefix.'simple_reservation_reservations',
+            [ 'id' => $id ],
+            [ '%d' ]
         );
 
         return $result ? true : false;

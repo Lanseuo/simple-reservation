@@ -25,6 +25,7 @@ button.simple-reservation.primary {
 .simple-reservation .week .body .day-topbar,
 .simple-reservation .week .body .period {
     min-height: 75px;
+    max-width: 1000px;
     border: 1px solid #eee;
     display: grid;
     place-content: center;
@@ -37,7 +38,7 @@ button.simple-reservation.primary {
     text-align: center;
 }
 
-.simple-reservation .week .body .period.free .plus-symbol {
+.simple-reservation .week .body .period.free .add-symbol {
     display: none;
 }
 
@@ -46,7 +47,7 @@ button.simple-reservation.primary {
     cursor: pointer;
 }
 
-.simple-reservation .week .body .period.free:hover .plus-symbol {
+.simple-reservation .week .period.free:hover .add-symbol {
     display: inline;
     color: white;
     font-size: 3em;
@@ -55,4 +56,39 @@ button.simple-reservation.primary {
 .simple-reservation a.thickbox,
 .simple-reservation a.thickbox:hover {
     box-shadow: none;
+}
+
+.simple-reservation .week .period.reserved .delete-symbol {
+    display: none;
+    color: white;
+}
+
+.simple-reservation .week .period.reserved.deletable:hover {
+    background-color: rgb(228, 67, 67);
+    cursor: pointer;
+}
+
+.simple-reservation .week .period.reserved.deletable:hover .content {
+    display: none;
+}
+
+.simple-reservation .week .period.reserved.deletable:hover .delete-symbol {
+    display: inline-block;
+}
+
+.simple-reservation .remove-style {
+    position: relative;
+}
+
+.simple-reservation .remove-style button {
+    background: none;
+    color: black;
+    display: block;
+    font-weight: normal;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
 }
