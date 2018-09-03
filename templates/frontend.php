@@ -1,5 +1,5 @@
 <?php
-    require_once( plugin_dir_path( dirname( __FILE__, 2 ) )."simple-reservation/inc/Api/Callbacks/FrontendCallbacks.php" );
+    require_once( plugin_dir_path( dirname( __FILE__, 1 ) )."/inc/Api/Callbacks/FrontendCallbacks.php" );
     $frontend_callbacks = new FrontendCallbacks();
 
     $rooms = $frontend_callbacks->get_rooms();
@@ -13,19 +13,21 @@
         [ 'name' => $days_of_week[date('w', strtotime('+4 day'))], 'date' =>  date('d.m.Y', strtotime('+4 day')) ]
     ];
 
-    // TODO
+    // TODO: Get from options
     $room_times = [
-        [ 'name' => '1. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '2. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '3. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '4. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '5. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '6. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '7. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '8. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '9. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'name' => '10. Stunde', 'description' => '8.05 - 8:55 Uhr' ]
+        [ 'id' => 0, 'name' => '1. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 1, 'name' => '2. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 2, 'name' => '3. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 3, 'name' => '4. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 4, 'name' => '5. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 5, 'name' => '6. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 6, 'name' => '7. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 7, 'name' => '8. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 8, 'name' => '9. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
+        [ 'id' => 9, 'name' => '10. Stunde', 'description' => '8.05 - 8:55 Uhr' ]
     ];
+
+    add_thickbox();
 ?>
 <div class="simple-reservation">
     <?php foreach ($rooms as $room) { ?>
@@ -33,7 +35,7 @@
         <p><?php echo $room->description; ?></p>
     
         <div class="week">
-            <div class="header">Week 1, 2018</div>
+            <div class="header">Reservierungen</div>
             <div class="body">
                 <div class="day-topbar"></div>
                 <?php
@@ -47,10 +49,72 @@
                             <p><strong><?php echo $room_time['name'] ?></strong></p>
                             <p><?php echo $room_time['description'] ?></p>
                     </div>          
-                    <?php foreach ( $days as $day ) { ?>
-                        <div class="period free">
-                            <span class="plus-symbol">+</span>
-                        </div>
+                    <?php foreach ( $days as $day ) {
+                        $period = $frontend_callbacks->get_period( $room->id, $day['date'], $room_time['id'] );
+                        if ($period) {
+                            echo '
+                            <div class="period reserved">
+                                <p><strong>'.$period->user.'</strong></p>
+                                <p>'.$period->description.'</p>
+                            </div>
+                            ';
+                        } else {
+                            $thickbox_id = 'thickbox-'.$room->id.'-'.str_replace('.', '', $day['date']).'-'.$room_time['id'];
+                            echo '
+                            <!-- Thickbox -->
+                            <div id="'.$thickbox_id.'" style="display:none;">
+                                <h4>Neue Reservierung</h4>
+                                <p>
+                                    This is my hidden content! It will appear in ThickBox when the link is clicked.
+                                </p>
+                                <form method="post">
+                                    <table class="form-table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Name</th>
+                                                <td>
+                                                    <input value="'.wp_get_current_user()->display_name.'" disabled type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Raum</th>
+                                                <td>
+                                                    <input value="'.$room->name.'" disabled type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Datum</th>
+                                                <td>
+                                                    <input value="'.$day['name'].', '.$day['date'].'" disabled type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Zeit</th>
+                                                <td>
+                                                    <input value="'.$room_time['name'].'" disabled type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Anmerkung</th>
+                                                <td>
+                                                    <input name="description" type="text">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="button-wrapper">
+                                        <button class="simple-reservation primary" type="submit">Speichern</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <a class="thickbox period free" href="#TB_inline?width=600&height=550&inlineId='.$thickbox_id.'">
+                                <span class="plus-symbol">+</span>
+                            </a>
+                            ';
+                        }
+                    ?>
+                        
                         <!-- <div class="period reserved">
                             <p><strong><php echo 'Name' ?></strong></p>
                             <p><php echo 'Description' ?></p>

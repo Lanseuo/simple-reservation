@@ -3,19 +3,21 @@
     width: 100% !important;
 }
 
+button.simple-reservation.primary {
+    background: #cc3d34 !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+    display: block !important;
+}
+
 .simple-reservation .week .header {
     background: rgb(221, 221, 221);
-    /* display: grid; */
-    /* grid-template-columns: auto 1fr auto; */
     padding: 5px 20px;
     text-align: center;
 }
 
 .simple-reservation .week .body {
     display: grid;
-    /* grid-auto-flow: row; */
-    /* grid-auto-flow: column; */
-    /* grid-template-rows: repeat(60, 1fr); */
     grid-template-columns: repeat(6, 1fr);
 }
 
@@ -32,6 +34,7 @@
 .simple-reservation .week .body .day-topbar p,
 .simple-reservation .week .body .period p {
     margin: 0;
+    text-align: center;
 }
 
 .simple-reservation .week .body .period.free .plus-symbol {
@@ -47,4 +50,9 @@
     display: inline;
     color: white;
     font-size: 3em;
+}
+
+.simple-reservation a.thickbox,
+.simple-reservation a.thickbox:hover {
+    box-shadow: none;
 }
