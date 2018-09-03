@@ -1,22 +1,32 @@
 <?php
+    namespace Templates;
+    use Inc\Api\Callbacks\AdminCallbacks;;
+
+    $admin_callbacks = new AdminCallbacks();
+
     global $wpdb;
 
-    if ( isset( $_POST['edit_room'] ) ) {
-        $room_id = $_POST['edit_room'];
-        $rooms = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms WHERE id = {$room_id}", OBJECT );
-        $room = $rooms[0];
-        $room_name = $room->name;
-        $room_description = $room->description;
-    } else if ( isset( $_POST['add_room'] ) ) {
-        $room_name = '';
-        $room_description = '';
+    $action_type = $_POST['action'] == 'start_edit_room' ? 'edit' : 'add';
+
+    switch ( $action_type ) {
+        case 'edit':
+            $room_id = $_POST['id'];
+            $room = $admin_callbacks->get_room( $room_id );
+            $room_name = $room->name;
+            $room_description = $room->description;
+            break;
+        case 'add':
+            $room_id = '';
+            $room_name = '';
+            $room_description = '';
     }
 ?>
 
-<h2><?php echo isset( $_POST['edit_room'] ) ? 'Edit' : 'Add'; ?> Room</h2>
+<h2><?php echo ucfirst($action_type); ?> Room</h2>
 
 <form method="post">
-    <input type="hidden" name="<?php echo isset( $_POST['edit_room'] ) ? 'edit' : 'add'; ?>_room_submit" value="<?php echo $_POST['edit_room']; ?>">
+    <input type="hidden" name="action" value="<?php echo $action_type; ?>_room">
+    <input type="hidden" name="id" value="<?php echo $room_id; ?>">
     <table class="form-table">
         <tbody>
             <tr>

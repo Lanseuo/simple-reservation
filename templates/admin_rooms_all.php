@@ -1,5 +1,5 @@
 <form method="post" class="text-right margin-bottom">
-    <input type="hidden" name="add_room">
+    <input type="hidden" name="action" value="start_add_room">
     <?php submit_button( 'Add new room', 'primary', 'submit', false ); ?>
 </form>
 
@@ -22,13 +22,15 @@
                 <td>'.$room->description.'</td>
                 <td class="text-center">
                     <form method="post" style="display: inline-block">
-                        <input type="hidden" name="edit_room" value="'.$room->id.'">';
-        submit_button( 'Edit', 'primary small', 'submit', false );
+                        <input type="hidden" name="action" value="start_edit_room">
+                        <input type="hidden" name="id" value="'.$room->id.'">';
+                        submit_button( 'Edit', 'primary small', 'submit', false );
         echo '
                     </form>
                     <form method="post" style="display: inline-block">
-                        <input type="hidden" name="delete_room" value="'.$room->id.'">';
-        submit_button( 'Delete', 'delete small', 'submit', false );
+                        <input type="hidden" name="action" value="delete_room">
+                        <input type="hidden" name="id" value="'.$room->id.'">';
+                        submit_button( 'Delete', 'delete small', 'submit', false );
         echo '
                     </form>
                 </td>
