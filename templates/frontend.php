@@ -66,11 +66,12 @@
                         <?php foreach ( $days as $day ) {
                             $reservation = $frontend_callbacks->get_reservation( $room->id, $day['date'], $room_time['id'] );
                             if ($reservation) {
+                                $deletable = wp_get_current_user()->ID == $reservation->user_id;
                                 echo '
-                                <form class="period reserved deletable remove-style" method="post">
+                                <form class="period reserved '.( $deletable ? ' deletable ' : '' ).' remove-style" method="post">
                                 <input type="hidden" name="action" value="delete_reservation">
                                 <input type="hidden" name="id" value="'.$reservation->id.'">
-                                <button type="submit">
+                                <button type="submit" '.( $deletable ? '' : 'disabled' ).'>
                                     <div class="content">
                                         <p><strong>'.$reservation->user.'</strong></p>
                                         <p>'.$reservation->description.'</p>

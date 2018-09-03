@@ -113,6 +113,14 @@ button.simple-reservation.primary {
     box-shadow: none;
 }
 
+.simple-reservation .week .period.reserved button {
+    cursor: auto;
+}
+
+.simple-reservation .week .period.reserved.deletable button {
+    cursor: pointer;
+}
+
 .simple-reservation .week .period.reserved .delete-symbol {
     display: none;
     color: white;

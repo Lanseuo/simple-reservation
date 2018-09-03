@@ -50,6 +50,8 @@ class FrontendCallbacks {
     }
 
     function add_reservation( $room_id, $date, $time_id, $description ) {
+        if ( ! is_user_logged_in()) die('You are not logged in!');
+
         global $wpdb;
         $result = $wpdb->insert(
             $wpdb->prefix.'simple_reservation_reservations',
@@ -70,8 +72,11 @@ class FrontendCallbacks {
         global $wpdb;
         $result = $wpdb->delete(
             $wpdb->prefix.'simple_reservation_reservations',
-            [ 'id' => $id ],
-            [ '%d' ]
+            [
+                'id'      => $id,
+                'user_id' => wp_get_current_user()->ID
+            ],
+            [ '%d', '%d' ]
         );
 
         return $result ? true : false;
