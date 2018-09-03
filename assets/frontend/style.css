@@ -1,0 +1,50 @@
+.entry-content {
+    /* For development */
+    width: 100% !important;
+}
+
+.simple-reservation .week .header {
+    background: rgb(221, 221, 221);
+    /* display: grid; */
+    /* grid-template-columns: auto 1fr auto; */
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.simple-reservation .week .body {
+    display: grid;
+    /* grid-auto-flow: row; */
+    /* grid-auto-flow: column; */
+    /* grid-template-rows: repeat(60, 1fr); */
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.simple-reservation .week .body .time-sidebar,
+.simple-reservation .week .body .day-topbar,
+.simple-reservation .week .body .period {
+    min-height: 75px;
+    border: 1px solid #eee;
+    display: grid;
+    place-content: center;
+}
+
+.simple-reservation .week .body .time-sidebar p,
+.simple-reservation .week .body .day-topbar p,
+.simple-reservation .week .body .period p {
+    margin: 0;
+}
+
+.simple-reservation .week .body .period.free .plus-symbol {
+    display: none;
+}
+
+.simple-reservation .week .body .period.free:hover {
+    background-color: rgb(113, 211, 113);
+    cursor: pointer;
+}
+
+.simple-reservation .week .body .period.free:hover .plus-symbol {
+    display: inline;
+    color: white;
+    font-size: 3em;
+}
