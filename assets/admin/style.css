@@ -1,0 +1,42 @@
+.simple-reservation table.big {
+    width: 100%;
+    border-spacing: 0px;
+    text-align: left;
+}
+
+.simple-reservation table.big th,
+.simple-reservation table.big td {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+.simple-reservation table.big th {
+    background-color: #f5f5f5;
+}
+
+.simple-reservation .text-center {
+    text-align: center;
+}
+
+.simple-reservation .text-right {
+    text-align: right;
+}
+
+.simple-reservation .margin-bottom {
+    margin-bottom: 15px;
+}
+
+.simple-reservation .delete {
+    background: #f44250;
+    color: white;
+    box-shadow: 0 1px 0 red;
+    border-color: red;
+}
+
+.simple-reservation .delete:hover {
+    background: #e83745;
+    color: white;
+    box-shadow: 0 1px 0 red;
+    border-color: red;
+}

@@ -37,6 +37,14 @@ class Admin extends BaseController {
         $subpages = [
             [
                 'parent_slug' => 'simple_reservation',
+                'page_title'  => 'Rooms',
+                'menu_title'  => 'Rooms',
+                'capability'  => 'manage_options',
+                'menu_slug'   => 'simple_reservation_rooms',
+                'callback'    => [$this->callbacks, 'admin_rooms'],
+            ],
+            [
+                'parent_slug' => 'simple_reservation',
                 'page_title'  => 'About the plugin',
                 'menu_title'  => 'About',
                 'capability'  => 'manage_options',

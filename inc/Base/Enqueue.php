@@ -14,7 +14,7 @@ class Enqueue extends BaseController {
     }
 
     function enqueue() {
-        wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/style.css' );
-        wp_enqueue_script( 'simple_reservation_sscript', $this->plugin_url . 'assets/script.js' );
+        wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/admin/style.css' );
+        wp_enqueue_script( 'simple_reservation_sscript', $this->plugin_url . 'assets/admin/script.js' );
     }
 }

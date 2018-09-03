@@ -10,6 +10,10 @@ class AdminCallBacks extends BaseController {
     function admin_general() {
         return require_once( "$this->plugin_path/templates/admin.php" );
     }
+
+    function admin_rooms() {
+        return require_once( "$this->plugin_path/templates/admin_rooms.php" );
+    }
     
     function admin_about() {
         return require_once( "$this->plugin_path/templates/admin_about.php" );
