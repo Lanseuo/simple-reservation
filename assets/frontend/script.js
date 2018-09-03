@@ -1,28 +1,43 @@
+let queryDict = {}
+location.search.substr(1).split("&").forEach(function (item) {
+    queryDict[item.split("=")[0]] = item.split("=")[1]
+})
+
 function tabs() {
-    document.addEventListener("DOMContentLoaded", function () {
-        let allTabs = document.querySelectorAll('.tabs li');
-        let allTabsContents = document.querySelectorAll('.tabs-content');
+    let allTabs = document.querySelectorAll('.tabs li');
+    let allTabsContents = document.querySelectorAll('.tabs-content');
+
+    let initialUrlTabId = location.hash.substring(1);
+    activateTab(initialUrlTabId);
+
+    allTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            activateTab(tab.dataset.tabId);
+        })
+    })
+
+    function activateTab(id) {
+        let exists = [...document.querySelectorAll('.tabs li')].filter(tab => tab.dataset.tabId == id).length;
+        if (!exists) return;
 
         allTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                allTabs.forEach(t => {
-                    t.classList.remove('active');
-                })
+            tab.classList.remove('active');
+            if (tab.dataset.tabId == id) {
                 tab.classList.add('active');
-
-                allTabsContents.forEach(t => {
-                    t.classList.remove('active');
-                    if (t.dataset.tabId == tab.dataset.tabId) {
-                        t.classList.add('active');
-                    }
-                })
-            })
-
+            }
         })
 
-        console.log(document.querySelectorAll('.tabs li'));
-    });
+        allTabsContents.forEach(t => {
+            t.classList.remove('active');
+            if (t.dataset.tabId == id) {
+                t.classList.add('active');
+            }
+        })
 
+        location.hash = id;
+    }
 }
 
-tabs();
+document.addEventListener("DOMContentLoaded", function () {
+    tabs();
+})
