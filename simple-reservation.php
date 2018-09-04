@@ -7,7 +7,7 @@
 Plugin Name: Simple Reservation
 Plugin URI: https://github.com/Lanseuo/simple-reservation
 Description: This plugin makes reservations on your website very simple.
-Version: 1.0.0
+Version: 0.1.0
 Author: Lucas Hild
 Author URI: https://lucas-hild.de
 License: MIT
