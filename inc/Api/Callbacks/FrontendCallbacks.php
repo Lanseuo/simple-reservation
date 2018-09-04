@@ -7,6 +7,8 @@
 // use Inc\Base\BaseController;
 
 class FrontendCallbacks {
+    public $notices = [];
+
     function action() {
         if ( ! isset($_POST['action']) ) return;
 
@@ -33,6 +35,22 @@ class FrontendCallbacks {
         return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms", OBJECT );
     }
 
+    function add_notice( $type, $message ) {
+        $this->notices[] = [
+            'type' => $type,
+            'message' => $message
+        ];
+    }
+
+    function show_notices() {
+        foreach ( $this->notices as $notice ) {
+            echo '
+            <div class="notice '.$notice['type'].'">
+                <p>'.$notice['message'].'</p>
+            </div>';
+        }
+    }
+
     function get_reservation( $room_id, $date, $time_id ) {
         global $wpdb;
 
@@ -46,6 +64,7 @@ class FrontendCallbacks {
                 AND date='$date'
                 AND time_id=$time_id
         ", OBJECT );
+
         return $results ? $results[0] : null;
     }
 
@@ -65,7 +84,11 @@ class FrontendCallbacks {
             [ '%d', '%s', '%d', '%s', '%d' ]
         );
 
-        return $result ? true : false;
+        if ($result) {
+            $this->add_notice( 'success', 'Die Reservierung wurde hinzugefügt.' );
+        } else {
+            $this->add_notice( 'error', 'Beim Hinzufügen der Reservierung ist ein Problem aufgetreten.' );
+        }
     }
 
     function delete_reservation( $id ) {
@@ -79,6 +102,10 @@ class FrontendCallbacks {
             [ '%d', '%d' ]
         );
 
-        return $result ? true : false;
+        if ($result) {
+            $this->add_notice( 'success', 'Die Reservierung wurde entfernt.' );
+        } else {
+            $this->add_notice( 'error', 'Beim Entfernen der Reservierung ist ein Problem aufgetreten.' );
+        }
     }
 }

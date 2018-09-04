@@ -10,6 +10,22 @@ button.simple-reservation.primary {
     display: block !important;
 }
 
+.simple-reservation .notice {
+    /* color: yellow; */
+}
+
+.simple-reservation .notice p {
+    margin: 0;
+}
+
+.simple-reservation .notice.success {
+    color: #51f766;
+}
+
+.simple-reservation .notice.error {
+    color: #f75059;
+}
+
 .simple-reservation .tabs {
     margin: 20px 0px 22px;
     visibility: visible;

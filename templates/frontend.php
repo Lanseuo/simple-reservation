@@ -33,6 +33,8 @@
     add_thickbox();
 ?>
 <div class="simple-reservation">
+    <?php $frontend_callbacks->show_notices(); ?>
+
     <ul class="tabs">
         <?php foreach ($rooms as $room_index => $room) { ?>
             <li
