@@ -68,7 +68,12 @@ class AdminCallBacks extends BaseController {
             ],
             [ '%s', '%s']
         );
-        return $result ? true : false;
+
+        if ($result) {
+            add_settings_error( 'simple_reservation', 'simple_reservation', 'Room '.$name.' was added.', 'updated' );
+        } else {
+            add_settings_error( 'simple_reservation', 'simple_reservation', 'There was an error during adding room '.$name.'.', 'error' );
+        }
     }
 
     function edit_room( $id, $name, $description ) {
@@ -83,8 +88,12 @@ class AdminCallBacks extends BaseController {
             [ '%s', '%s' ],
             [ '%d' ]
         );
-        return $result ? true : false;
-        return $result ? true : false;
+
+        if ($result) {
+            add_settings_error( 'simple_reservation', 'simple_reservation', 'Room '.$name.' was updated.', 'updated' );
+        } else {
+            add_settings_error( 'simple_reservation', 'simple_reservation', 'There was an error during editing room '.$name.'.', 'error' );
+        }
     }
 
     function delete_room( $id ) {
@@ -94,5 +103,11 @@ class AdminCallBacks extends BaseController {
             [ 'id' => $id ],
             [ '%d']
         );
+
+        if ($result) {
+            add_settings_error( 'simple_reservation', 'simple_reservation', 'Room was deleted.', 'updated' );
+        } else {
+            add_settings_error( 'simple_reservation', 'simple_reservation', 'There was an error during deleting room.', 'error' );
+        }
     }
 }
