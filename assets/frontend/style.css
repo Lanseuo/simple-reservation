@@ -8,10 +8,8 @@ button.simple-reservation.primary {
     margin-right: 0 !important;
     margin-left: auto !important;
     display: block !important;
-}
-
-.simple-reservation .notice {
-    /* color: yellow; */
+    color: white;
+    padding: 15px 30px;
 }
 
 .simple-reservation .notice p {
@@ -127,6 +125,7 @@ button.simple-reservation.primary {
 .simple-reservation a.thickbox,
 .simple-reservation a.thickbox:hover {
     box-shadow: none;
+    text-decoration: none;
 }
 
 .simple-reservation .week .period.reserved button {
@@ -170,4 +169,48 @@ button.simple-reservation.primary {
     top: 0;
     height: 100%;
     width: 100%;
+}
+
+.simple-reservation-modal h4 {
+    font-size: 23px;
+    font-weight: 800;
+    margin: 10px 0;
+}
+
+.simple-reservation-modal table {
+    border-collapse: collapse;
+}
+
+.simple-reservation-modal .row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.simple-reservation-modal .row:nth-of-type(5) {
+    border-bottom: none;
+}
+
+.simple-reservation-modal .row p,
+.simple-reservation-modal .row input {
+    font-size: 16px;
+}
+
+.simple-reservation-modal .row p {
+    margin: 0;
+    align-self: center;
+    font-weight: 800;
+}
+
+.simple-reservation-modal .row input {
+    display: block;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+}
+
+.simple-reservation-modal .row input:focus {
+    color: #222;
+    border-color: #333;
 }

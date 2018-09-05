@@ -86,55 +86,48 @@
                                 $thickbox_id = 'thickbox-'.$room->id.'-'.str_replace('.', '', $day['date']).'-'.$room_time['id'];
                                 echo '
                                 <!-- Thickbox -->
-                                <div id="'.$thickbox_id.'" style="display:none;">
-                                    <h4>Neue Reservierung</h4>
-                                    <p>
-                                        This is my hidden content! It will appear in ThickBox when the link is clicked.
-                                    </p>
-                                    <form method="post">
-                                        <input type="hidden" name="action" value="add_reservation">
-                                        <input type="hidden" name="room_id" value="'.$room->id.'">
-                                        <input type="hidden" name="date" value="'.$day['date'].'">
-                                        <input type="hidden" name="time_id" value="'.$room_time['id'].'">
+                                <div class="modal" id="'.$thickbox_id.'" style="display:none;">
+                                    <div class="simple-reservation-modal">
+                                        <h4>Neue Reservierung</h4>
+                                        <p>
+                                            This is my hidden content! It will appear in ThickBox when the link is clicked.
+                                        </p>
+                                        <form method="post">
+                                            <input type="hidden" name="action" value="add_reservation">
+                                            <input type="hidden" name="room_id" value="'.$room->id.'">
+                                            <input type="hidden" name="date" value="'.$day['date'].'">
+                                            <input type="hidden" name="time_id" value="'.$room_time['id'].'">
 
-                                        <table class="form-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">Name</th>
-                                                    <td>
-                                                        <input value="'.wp_get_current_user()->display_name.'" disabled type="text">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Raum</th>
-                                                    <td>
-                                                        <input value="'.$room->name.'" disabled type="text">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Datum</th>
-                                                    <td>
-                                                        <input value="'.$day['name'].', '.$day['date'].'" disabled type="text">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Zeit</th>
-                                                    <td>
-                                                        <input value="'.$room_time['name'].'" disabled type="text">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Anmerkung</th>
-                                                    <td>
-                                                        <input name="description" type="text">
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="button-wrapper">
-                                            <button class="simple-reservation primary" type="submit">Speichern</button>
-                                        </div>
-                                    </form>
+                                            <div class="row">
+                                                <p>Name</p>
+                                                <input value="'.wp_get_current_user()->display_name.'" disabled type="text">
+                                            </div>
+
+                                            <div class="row">
+                                                <p>Raum</p>
+                                                <input value="'.$room->name.'" disabled type="text">
+                                            </div>
+
+                                            <div class="row">
+                                                <p>Datum</p>
+                                                <input value="'.$day['name'].', '.$day['date'].'" disabled type="text">
+                                            </div>
+
+                                            <div class="row">
+                                                <p>Zeit</p>
+                                                <input value="'.$room_time['name'].'" disabled type="text">
+                                            </div>
+
+                                            <div class="row">
+                                                <p>Anmerkung</p>
+                                                <input name="description" type="text">
+                                            </div>
+
+                                            <div class="button-wrapper">
+                                                <button class="simple-reservation primary" type="submit">Speichern</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
 
                                 <a class="thickbox period free" href="#TB_inline?width=600&height=550&inlineId='.$thickbox_id.'">

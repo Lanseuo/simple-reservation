@@ -20,6 +20,8 @@ You can either install the plugin using FTP or clone the repository using git. L
 ```
 cd .../wp-content/plugins
 git clone https://github.com/Lanseuo/simple-reservation.git
+cd simple-reservation
+composer install
 ```
 
 Go to the plugin area of your WordPress admin space and activate the plugin
