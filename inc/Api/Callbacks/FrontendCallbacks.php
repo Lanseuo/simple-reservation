@@ -70,8 +70,20 @@ class FrontendCallbacks {
 
     function add_reservation( $room_id, $date, $time_id, $description ) {
         if ( ! is_user_logged_in()) die('You are not logged in!');
-
         global $wpdb;
+
+        $duplicate_reservations = $wpdb->get_results( "
+            SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
+            WHERE
+                room_id=$room_id
+                AND date='$date'
+                AND time_id=$time_id
+        ", OBJECT );
+        if ( $duplicate_reservations ) {
+            $this->add_notice( 'error', 'Doppelte Reservierungen sind nicht möglich' );
+            return;
+        }
+
         $result = $wpdb->insert(
             $wpdb->prefix.'simple_reservation_reservations',
             [
