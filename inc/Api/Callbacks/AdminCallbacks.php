@@ -110,4 +110,28 @@ class AdminCallBacks extends BaseController {
             add_settings_error( 'simple_reservation', 'simple_reservation', 'There was an error during deleting room.', 'error' );
         }
     }
+
+    function delete_reservations_in_past() {
+        global $wpdb;
+        
+        $reservations = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_reservations", OBJECT );
+
+        $now = new \DateTime();
+        $now->setTime(0, 0, 0, 0);
+
+        foreach ( $reservations as $reservation ) {
+            $parsed_date = date_parse( $reservation->date );
+            $date = new \DateTime();
+            $date->setDate( $parsed_date['year'], $parsed_date['month'], $parsed_date['day'] );
+            $date->setTime( 0, 0, 0, 0 );
+            
+            if ($date < $now) {
+                $wpdb->delete(
+                    $wpdb->prefix.'simple_reservation_reservations',
+                    [ 'id' => $reservation->id ],
+                    [ '%d']
+                );
+            }
+        }
+    }
 }
