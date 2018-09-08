@@ -40,6 +40,7 @@ class Activate {
             description text DEFAULT '' NOT NULL,
             user_id bigint(20) NOT NULL,
             room_id bigint(20) NOT NULL,
+            length int DEFAULT 1 NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
         dbDelta( $reservations_sql );

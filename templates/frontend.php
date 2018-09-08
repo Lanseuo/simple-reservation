@@ -1,5 +1,7 @@
 <?php
-    require_once( plugin_dir_path( dirname( __FILE__, 1 ) )."/inc/Api/Callbacks/FrontendCallbacks.php" );
+    namespace Templates;
+    use Inc\Api\Callbacks\FrontendCallbacks;
+    
     $frontend_callbacks = new FrontendCallbacks();
     $frontend_callbacks->action();
 
@@ -53,33 +55,41 @@
             <div class="week">
                 <div class="header">Reservierungen</div>
                 <div class="body">
-                    <div class="day-topbar"></div>
-                    <?php
-                        foreach ( $days as $day ) {
-                            echo '<div class="day-topbar"><strong>'.$day['name'].'</strong></div>';
-                        }
-                    ?>
-
+                    
+                    <div class="day-topbar empty"></div>
                     <?php foreach ( $room_times as $room_time ) { ?>
                         <div class="time-sidebar">
                                 <p><strong><?php echo $room_time['name'] ?></strong></p>
                                 <p><?php echo $room_time['description'] ?></p>
-                        </div>          
-                        <?php foreach ( $days as $day ) {
+                        </div>
+                    <?php } ?> 
+
+                    <?php foreach ( $days as $day ) {
+                        echo '<div class="day-topbar"><strong>'.$day['name'].'</strong></div>';
+                    ?>
+                        <?php for ( $room_time_index = 0; $room_time_index < count($room_times); $room_time_index++ ) {
+                            $room_time = $room_times[$room_time_index];
                             $reservation = $frontend_callbacks->get_reservation( $room->id, $day['date'], $room_time['id'] );
+
                             if ($reservation) {
                                 $deletable = wp_get_current_user()->ID == $reservation->user_id;
+
+                                // TODO: Skip next periods, if current period has a span > 1
+                                for ( $i = 1; $i < $reservation->length; $i++ ) {
+                                    $room_time_index++;
+                                }
+
                                 echo '
-                                <form class="period reserved '.( $deletable ? ' deletable ' : '' ).' remove-style" method="post">
-                                <input type="hidden" name="action" value="delete_reservation">
-                                <input type="hidden" name="id" value="'.$reservation->id.'">
-                                <button type="submit" '.( $deletable ? '' : 'disabled' ).'>
-                                    <div class="content">
-                                        <p><strong>'.$reservation->user.'</strong></p>
-                                        <p>'.$reservation->description.'</p>
-                                    </div>
-                                    <span class="delete-symbol dashicons dashicons-trash"></span>
-                                </button>
+                                <form class="period reserved '.( $deletable ? ' deletable ' : '' ).' remove-style" style="grid-row: span '.$reservation->length.'" method="post">
+                                    <input type="hidden" name="action" value="delete_reservation">
+                                    <input type="hidden" name="id" value="'.$reservation->id.'">
+                                    <button type="submit" '.( $deletable ? '' : 'disabled' ).'>
+                                        <div class="content">
+                                            <p><strong>'.$reservation->user.'</strong></p>
+                                            <p>'.$reservation->description.'</p>
+                                        </div>
+                                        <span class="delete-symbol dashicons dashicons-trash"></span>
+                                    </button>
                                 </form>
                                 ';
                             } else {
@@ -89,9 +99,7 @@
                                 <div class="modal" id="'.$thickbox_id.'" style="display:none;">
                                     <div class="simple-reservation-modal">
                                         <h4>Neue Reservierung</h4>
-                                        <p>
-                                            This is my hidden content! It will appear in ThickBox when the link is clicked.
-                                        </p>
+
                                         <form method="post">
                                             <input type="hidden" name="action" value="add_reservation">
                                             <input type="hidden" name="room_id" value="'.$room->id.'">
@@ -116,6 +124,11 @@
                                             <div class="row">
                                                 <p>Zeit</p>
                                                 <input value="'.$room_time['name'].'" disabled type="text">
+                                            </div>
+
+                                            <div class="row">
+                                                <p>Länge</p>
+                                                <input name="length" type="number" value="1" min="1" max="4">
                                             </div>
 
                                             <div class="row">

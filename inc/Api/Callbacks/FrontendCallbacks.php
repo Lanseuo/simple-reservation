@@ -2,9 +2,9 @@
 /**
  * @package SimpleReservation
  */
-// namespace Inc\Api\Callbacks;
+namespace Inc\Api\Callbacks;
 
-// use Inc\Base\BaseController;
+use Inc\Base\BaseController;
 
 class FrontendCallbacks {
     public $notices = [];
@@ -18,7 +18,8 @@ class FrontendCallbacks {
                     $_POST['room_id'],
                     $_POST['date'],
                     $_POST['time_id'],
-                    $_POST['description']
+                    $_POST['description'],
+                    $_POST['length']
                 );
                 break;
             case 'delete_reservation':
@@ -68,9 +69,12 @@ class FrontendCallbacks {
         return $results ? $results[0] : null;
     }
 
-    function add_reservation( $room_id, $date, $time_id, $description ) {
+    function add_reservation( $room_id, $date, $time_id, $description, $length ) {
         if ( ! is_user_logged_in()) die('You are not logged in!');
         global $wpdb;
+
+        echo gettype($length);
+        echo $length;
 
         $duplicate_reservations = $wpdb->get_results( "
             SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
@@ -91,7 +95,8 @@ class FrontendCallbacks {
                 'date'        => $date,
                 'time_id'     => $time_id,
                 'description' => $description,
-                'user_id'     => wp_get_current_user()->ID
+                'user_id'     => wp_get_current_user()->ID,
+                'length'      => $length
             ],
             [ '%d', '%s', '%d', '%s', '%d' ]
         );

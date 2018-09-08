@@ -87,7 +87,9 @@ button.simple-reservation.primary {
 
 .simple-reservation .week .body {
     display: grid;
+    grid-auto-flow: column;
     grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(11, 1fr);
 }
 
 .simple-reservation .week .body .time-sidebar,

@@ -1,11 +1,9 @@
 <?php
     namespace Templates;
-    use Inc\Api\Callbacks\AdminCallbacks;;
+    use Inc\Api\Callbacks\AdminCallbacks;
 
     $admin_callbacks = new AdminCallbacks();
-
-    global $wpdb;
-
+    
     $action_type = $_POST['action'] == 'start_edit_room' ? 'edit' : 'add';
 
     switch ( $action_type ) {
