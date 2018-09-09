@@ -76,6 +76,27 @@ class FrontendCallbacks {
         }
     }
 
+    function get_days() {
+        $days_of_week = array('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag');
+
+        $days = [];
+
+        for ( $index = 0; count($days) < 5; $index++ ) {
+            $timestamp = strtotime('+'.strval($index).' day');
+            $day_of_week = date('w', $timestamp);
+
+            if (in_array($day_of_week, [0, 6])) {
+                continue;
+            }
+
+            $days[] = [
+                'date' => date('d.m.Y', $timestamp),
+                'name' => $days_of_week[$day_of_week]
+            ];
+        }
+        return $days;
+    }
+
     function get_reservation( $room_id, $date, $time_id ) {
         global $wpdb;
 

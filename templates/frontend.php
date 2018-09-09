@@ -8,15 +8,7 @@
     $rooms = $frontend_callbacks->get_rooms();
     if ( ! $rooms ) echo '<p>Keine Räume eingerichtet.</p>';
 
-    // TODO: Not weekend
-    $days_of_week = array('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag');
-    $days = [
-        [ 'name' => $days_of_week[date('w')], 'date' => date('d.m.Y') ],
-        [ 'name' => $days_of_week[date('w', strtotime('+1 day'))], 'date' =>  date('d.m.Y', strtotime('+1 day')) ],
-        [ 'name' => $days_of_week[date('w', strtotime('+2 day'))], 'date' =>  date('d.m.Y', strtotime('+2 day')) ],
-        [ 'name' => $days_of_week[date('w', strtotime('+3 day'))], 'date' =>  date('d.m.Y', strtotime('+3 day')) ],
-        [ 'name' => $days_of_week[date('w', strtotime('+4 day'))], 'date' =>  date('d.m.Y', strtotime('+4 day')) ]
-    ];
+    $days = $frontend_callbacks->get_days();
 
     // TODO: Get from options
     $room_times = [
