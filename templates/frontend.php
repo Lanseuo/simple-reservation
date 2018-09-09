@@ -20,16 +20,16 @@
 
     // TODO: Get from options
     $room_times = [
-        [ 'id' => 0, 'name' => '1. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 1, 'name' => '2. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 2, 'name' => '3. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 3, 'name' => '4. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 4, 'name' => '5. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 5, 'name' => '6. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 6, 'name' => '7. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 7, 'name' => '8. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 8, 'name' => '9. Stunde', 'description' => '8.05 - 8:55 Uhr' ],
-        [ 'id' => 9, 'name' => '10. Stunde', 'description' => '8.05 - 8:55 Uhr' ]
+        [ 'id' => 0, 'name' => '1. Stunde', 'description' => '8:05 - 8:50 Uhr' ],
+        [ 'id' => 1, 'name' => '2. Stunde', 'description' => '8:55 - 9:40 Uhr' ],
+        [ 'id' => 2, 'name' => '3. Stunde', 'description' => '10:00 - 10:45 Uhr' ],
+        [ 'id' => 3, 'name' => '4. Stunde', 'description' => '10:50 - 11:35 Uhr' ],
+        [ 'id' => 4, 'name' => '5. Stunde', 'description' => '11:45 - 12:30 Uhr' ],
+        [ 'id' => 5, 'name' => '6. Stunde', 'description' => '12:35 - 13:20 Uhr' ],
+        [ 'id' => 6, 'name' => '7. Stunde', 'description' => '14:10 - 14:55 Uhr' ],
+        [ 'id' => 7, 'name' => '8. Stunde', 'description' => '15.00 - 15:45 Uhr' ],
+        [ 'id' => 8, 'name' => '9. Stunde', 'description' => '15.50 - 16:35 Uhr' ],
+        [ 'id' => 9, 'name' => '10. Stunde', 'description' => '16.40 - 17:25 Uhr' ]
     ];
 
     add_thickbox();
@@ -93,7 +93,9 @@
                                 </form>
                                 ';
                             } else {
+                                $max_length = $frontend_callbacks->get_max_length( $room->id, $day['date'], $room_time_index, 10 );
                                 $thickbox_id = 'thickbox-'.$room->id.'-'.str_replace('.', '', $day['date']).'-'.$room_time['id'];
+
                                 echo '
                                 <!-- Thickbox -->
                                 <div class="modal" id="'.$thickbox_id.'" style="display:none;">
@@ -128,7 +130,7 @@
 
                                             <div class="row">
                                                 <p>Länge</p>
-                                                <input name="length" type="number" value="1" min="1" max="4">
+                                                <input name="length" type="number" value="1" min="1" max="'.strval($max_length).'">
                                             </div>
 
                                             <div class="row">

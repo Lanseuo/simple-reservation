@@ -36,6 +36,30 @@ class FrontendCallbacks {
         return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms", OBJECT );
     }
 
+    function get_max_length( $room_id, $date, $time_id, $number_of_times ) {
+        global $wpdb;
+
+        $reservations_after_reservation = $wpdb->get_results( "
+            SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
+            WHERE
+                room_id=$room_id
+                AND date='$date'
+                AND time_id>$time_id
+        ", OBJECT );
+
+        $max_lengths = [];
+
+        // Until end of day
+        $max_lengths[] = $number_of_times - $time_id;
+
+        // Until next lesson
+        foreach ( $reservations_after_reservation as $reservation ) {
+            $max_lengths[] = $reservation->time_id - $time_id;
+        }
+
+        return min( $max_lengths );
+    }
+
     function add_notice( $type, $message ) {
         $this->notices[] = [
             'type' => $type,
@@ -72,9 +96,6 @@ class FrontendCallbacks {
     function add_reservation( $room_id, $date, $time_id, $description, $length ) {
         if ( ! is_user_logged_in()) die('You are not logged in!');
         global $wpdb;
-
-        echo gettype($length);
-        echo $length;
 
         $duplicate_reservations = $wpdb->get_results( "
             SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
