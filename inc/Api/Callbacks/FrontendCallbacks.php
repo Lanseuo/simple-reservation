@@ -105,7 +105,13 @@ class FrontendCallbacks {
                 AND time_id=$time_id
         ", OBJECT );
         if ( $duplicate_reservations ) {
-            $this->add_notice( 'error', 'Doppelte Reservierungen sind nicht möglich' );
+            $this->add_notice( 'error', 'Doppelte Reservierungen sind nicht möglich.' );
+            return;
+        }
+
+        $max_length = $this->get_max_length( $room_id, $date, $time_id, 10 );
+        if ( $length > $max_length ) {
+            $this->add_notice( 'error', 'Überschneidende Reservierungen sind nicht möglich.' );
             return;
         }
 
