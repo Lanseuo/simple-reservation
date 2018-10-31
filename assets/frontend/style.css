@@ -85,16 +85,16 @@ button.simple-reservation.primary {
     text-align: center;
 }
 
-.simple-reservation .week .body {
+.simple-reservation .week .week-grid {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(11, 1fr);
 }
 
-.simple-reservation .week .body .time-sidebar,
-.simple-reservation .week .body .day-topbar,
-.simple-reservation .week .body .period {
+.simple-reservation .week .week-grid .time-sidebar,
+.simple-reservation .week .week-grid .day-topbar,
+.simple-reservation .week .week-grid .period {
     min-height: 75px;
     max-width: 1000px;
     border: 1px solid #eee;
@@ -102,18 +102,18 @@ button.simple-reservation.primary {
     place-content: center;
 }
 
-.simple-reservation .week .body .time-sidebar p,
-.simple-reservation .week .body .day-topbar p,
-.simple-reservation .week .body .period p {
+.simple-reservation .week .week-grid .time-sidebar p,
+.simple-reservation .week .week-grid .day-topbar p,
+.simple-reservation .week .week-grid .period p {
     margin: 0;
     text-align: center;
 }
 
-.simple-reservation .week .body .period.free .add-symbol {
+.simple-reservation .week .week-grid .period.free .add-symbol {
     display: none;
 }
 
-.simple-reservation .week .body .period.free:hover {
+.simple-reservation .week .week-grid .period.free:hover {
     background-color: rgb(113, 211, 113);
     cursor: pointer;
 }
