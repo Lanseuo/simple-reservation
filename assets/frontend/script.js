@@ -253,12 +253,6 @@ Vue.component('week-grid', {
 
             return result
         }
-    },
-
-    filters: {
-        beautifulDate(date) {
-            return `${date.slice(6, 8)}.${date.slice(4, 6)}.${date.slice(0, 4)}`
-        }
     }
 })
 
@@ -295,7 +289,7 @@ Vue.component('period', {
 
                     <div class="row">
                         <p>Datum</p>
-                        <input :value="day.date" disabled type="text">
+                        <input :value="day.date | beautifulDate " disabled type="text">
                     </div>
 
                     <div class="row">
@@ -414,4 +408,8 @@ Vue.component('period', {
             return this.$store.state.info.is_admin || this.reservation.userId == this.$store.state.info.user_id
         }
     }
+})
+
+Vue.filter('beautifulDate', date => {
+    return `${date.slice(6, 8)}.${date.slice(4, 6)}.${date.slice(0, 4)}`
 })
