@@ -55,13 +55,26 @@ let app = new Vue({
 Vue.component('tabs', {
     template: `
         <div class="tabs">
-            <li v-for="room in rooms" :class="{ active: roomId == room.id }" @click="$emit('changeroom', room.id)" :key="room.id">
+            <li v-for="room in rooms" :class="{ active: roomId == room.id }" @click="changeRoom(room.id)" :key="room.id">
                 <a>{{ room.name }}</a>
             </li>
         </div>
     `,
 
-    props: ['rooms', 'roomId']
+    props: ['rooms', 'roomId'],
+
+    created() {
+        // Get roomId from url hash
+        let roomId = location.hash.substring(1)
+        this.changeRoom(roomId)
+    },
+
+    methods: {
+        changeRoom(roomId) {
+            this.$emit('changeroom', roomId)
+            location.hash = roomId
+        }
+    }
 })
 
 Vue.component('room', {
@@ -89,7 +102,7 @@ Vue.component('room', {
     },
 
     created() {
-        this.startDayOfWeek = new Date();
+        this.startDayOfWeek = new Date()
         this.startDayOfWeek.setDate(this.startDayOfWeek.getDate() - (this.startDayOfWeek.getDay() + 6) % 7)
         this.startDayOfWeek = new Date(this.startDayOfWeek.getTime())
     },
