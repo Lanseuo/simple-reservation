@@ -70,13 +70,44 @@ Vue.component('room', {
             <p>{{ room.description }}</p>
 
             <div class="week">
-                <div class="header">Reservierungen</div>
-                <week-grid :room="room"></week-grid>
+                <div class="header">
+                    <span @click="previousWeek" class="dashicons dashicons-arrow-left-alt2"></span>
+                    <p>Reservierungen {{ startDayOfWeek.getDate() }}</p>
+                    <span @click="nextWeek" class="dashicons dashicons-arrow-right-alt2"></span>
+                </div>
+                <week-grid :room="room" :start-day-of-week="startDayOfWeek"></week-grid>
             </div>
         </div>
     `,
 
-    props: ['room']
+    props: ['room'],
+
+    data() {
+        return {
+            startDayOfWeek: null
+        }
+    },
+
+    created() {
+        this.startDayOfWeek = new Date();
+        this.startDayOfWeek.setDate(this.startDayOfWeek.getDate() - (this.startDayOfWeek.getDay() + 6) % 7)
+        this.startDayOfWeek = new Date(this.startDayOfWeek.getTime())
+    },
+
+    methods: {
+        previousWeek() {
+            this.startDayOfWeek.setDate(this.startDayOfWeek.getDate() - 7)
+
+            // Create a copy
+            this.startDayOfWeek = new Date(this.startDayOfWeek.getTime())
+        },
+        nextWeek() {
+            this.startDayOfWeek.setDate(this.startDayOfWeek.getDate() + 7)
+
+            // Create a copy
+            this.startDayOfWeek = new Date(this.startDayOfWeek.getTime())
+        }
+    }
 })
 
 Vue.component('week-grid', {
@@ -107,7 +138,7 @@ Vue.component('week-grid', {
         </div>
     `,
 
-    props: ['room'],
+    props: ['room', 'startDayOfWeek'],
 
     data() {
         return {
@@ -172,8 +203,7 @@ Vue.component('week-grid', {
             }
 
             // First day of week
-            let currentDay = new Date();
-            currentDay.setDate(currentDay.getDate() - (currentDay.getDay() + 6) % 7)
+            let currentDay = new Date(this.startDayOfWeek.getTime())
 
             appendDate(currentDay)
 
