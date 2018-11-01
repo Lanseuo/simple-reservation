@@ -16,6 +16,11 @@ class Frontend extends BaseController {
         add_shortcode( 'simplereservation', [$this, 'render_simple_reservation']);
 
         add_action( 'rest_api_init', function () {
+            register_rest_route( 'simplereservation' , '/info', [
+                'methods' => 'GET',
+                'callback' => [$this, 'info']
+            ]);
+
             register_rest_route( 'simplereservation' , '/rooms', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_rooms']
@@ -38,9 +43,20 @@ class Frontend extends BaseController {
         });
     }
 
+    function info( $request ) {
+        if ( ! is_user_logged_in() ) {
+            return new WP_Error( 'not_authorized', 'Zugriff verweigert.', [ 'status' => 401 ] );
+        }
+
+        return [
+            'user_id'  => wp_get_current_user()->ID,
+            'username' => wp_get_current_user()->data->display_name
+        ];
+    }
+
     function get_rooms( $request ) {
         if ( ! is_user_logged_in() ) {
-            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+            return new WP_Error( 'not_authorized', 'Zugriff verweigert.', [ 'status' => 401 ] );
         }
 
         global $wpdb;
@@ -54,7 +70,7 @@ class Frontend extends BaseController {
 
     function get_reservations ( $request ) {
         if ( ! is_user_logged_in() ) {
-            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+            return new WP_Error( 'not_authorized', 'Zugriff verweigert.', [ 'status' => 401 ] );
         }
 
         global $wpdb;
@@ -76,7 +92,7 @@ class Frontend extends BaseController {
 
     function add_reservation( $request ) {
         if ( ! is_user_logged_in() ) {
-            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+            return new WP_Error( 'not_authorized', 'Zugriff verweigert.', [ 'status' => 401 ] );
         }
 
         global $wpdb;
@@ -125,7 +141,7 @@ class Frontend extends BaseController {
             WHERE room_id=$room_id
         ", OBJECT );
 
-        if ( $result && $reservations_results ) {
+        if ( $result ) {
             return [
                 'code'         => 'success',
                 'message'      => 'Die Reservierung wurde hinzugefügt.',
@@ -138,7 +154,7 @@ class Frontend extends BaseController {
 
     function delete_reservation( $request ) {
         if ( ! is_user_logged_in() ) {
-            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+            return new WP_Error( 'not_authorized', 'Zugriff verweigert.', [ 'status' => 401 ] );
         }
 
         $room_id = $request['room_id'];
@@ -163,7 +179,7 @@ class Frontend extends BaseController {
             WHERE room_id=$room_id
         ", OBJECT );
 
-        if ( $result && $reservations_results ) {
+        if ( $result ) {
             return [
                 'code'         => 'success',
                 'message'      => 'Die Reservierung wurde entfernt.',

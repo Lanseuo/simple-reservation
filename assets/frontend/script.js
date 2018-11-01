@@ -2,15 +2,16 @@ let app = new Vue({
     el: '#simple-reservation-app',
 
     data: {
-        service: new SimpleReservationService(window.wpApiBaseUrl),
         loading: true,
         rooms: [],
         room: null,
     },
 
+    store: simpleReservationStore,
+
     created() {
         this.loading = true
-        this.service.getRooms()
+        this.$store.state.service.getRooms()
             .then(response => {
                 this.rooms = response.data.rooms
                 this.room = this.rooms[0]
@@ -18,6 +19,14 @@ let app = new Vue({
             })
             .catch(e => {
                 this.loading = false
+            })
+
+        this.$store.state.service.info()
+            .then(response => {
+                this.$store.dispatch('setUser', { id: response.data.user_id, username: response.data.username })
+            })
+            .catch(e => {
+
             })
     },
 
@@ -47,12 +56,12 @@ Vue.component('room', {
 
             <div class="week">
                 <div class="header">Reservierungen</div>
-                <week-grid :room="room" :service="service"></week-grid>
+                <week-grid :room="room"></week-grid>
             </div>
         </div>
     `,
 
-    props: ['room', 'service']
+    props: ['room']
 })
 
 Vue.component('week-grid', {
@@ -73,7 +82,6 @@ Vue.component('week-grid', {
                     :time="time"
                     :room="room"
                     :reservations="reservations"
-                    :service="service"
                     :key="room.id + '-' + day.date + '-' + time.id"
                     @updatereservations="updateReservations"
                 ></period>
@@ -81,7 +89,7 @@ Vue.component('week-grid', {
         </div>
     `,
 
-    props: ['room', 'service'],
+    props: ['room'],
 
     data() {
         return {
@@ -110,7 +118,7 @@ Vue.component('week-grid', {
     },
 
     created() {
-        this.service.getReservations(this.room.id)
+        this.$store.state.service.getReservations(this.room.id)
             .then(response => {
                 this.updateReservations(response.data.reservations)
             })
@@ -153,7 +161,7 @@ Vue.component('period', {
 
                     <div class="row">
                         <p>Name</p>
-                        <input value="Replace with username" disabled type="text">
+                        <input :value="$store.state.user.username" disabled type="text">
                     </div>
 
                     <div class="row">
@@ -189,7 +197,7 @@ Vue.component('period', {
         </a>
     `,
 
-    props: ['day', 'time', 'room', 'reservations', 'service'],
+    props: ['day', 'time', 'room', 'reservations'],
 
     data() {
         return {
@@ -200,7 +208,7 @@ Vue.component('period', {
 
     methods: {
         addReservation() {
-            this.service.addReservation(this.room.id, this.day.date, this.time.id, this.description, this.length)
+            this.$store.state.service.addReservation(this.room.id, this.day.date, this.time.id, this.description, this.length)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
 
@@ -213,7 +221,7 @@ Vue.component('period', {
         },
 
         deleteReservation() {
-            this.service.deleteReservation(this.room.id, this.reservation.id)
+            this.$store.state.service.deleteReservation(this.room.id, this.reservation.id)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
                 })

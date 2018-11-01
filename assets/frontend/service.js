@@ -10,6 +10,10 @@ class SimpleReservationService {
         })
     }
 
+    info() {
+        return this.api.get('/info  ')
+    }
+
     getRooms() {
         return this.api.get('rooms')
     }

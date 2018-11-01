@@ -7,7 +7,7 @@
         <p v-if="loading">Loading ...</p>
         <div v-else>
             <tabs :rooms="rooms" :room-id="room.id" @changeroom="changeRoom"></tabs>
-            <room :room="room" :service="service"></room>
+            <room :room="room"></room>
         </div>
     </div>
 </div>
