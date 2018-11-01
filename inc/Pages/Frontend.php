@@ -39,6 +39,10 @@ class Frontend extends BaseController {
     }
 
     function get_rooms( $request ) {
+        if ( ! is_user_logged_in() ) {
+            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+        }
+
         global $wpdb;
 
         $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms", OBJECT );
@@ -49,6 +53,10 @@ class Frontend extends BaseController {
     }
 
     function get_reservations ( $request ) {
+        if ( ! is_user_logged_in() ) {
+            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+        }
+
         global $wpdb;
 
         $room_id = $request['room_id'];
@@ -79,6 +87,22 @@ class Frontend extends BaseController {
         $description = $request['description'];
         $length = $request['length'];
 
+        // Avoid duplicate reservations
+        $duplicate_reservations = $wpdb->get_results( "
+            SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
+            WHERE
+                room_id=$room_id
+                AND date='$date'
+                AND time_id=$time_id
+        ", OBJECT );
+        if ( $duplicate_reservations ) {
+            return new WP_Error( 'malform', 'Doppelte Reservierungen sind nicht möglich.', [ 'status' => 400 ] );
+        }
+
+        $max_length = $this->get_max_length( $room_id, $date, $time_id );
+        if ( $length > $max_length ) {
+            return new WP_Error( 'malform', 'Überschneidende Reservierungen sind nicht möglich.', [ 'status' => 400 ] );
+        }
 
         $result = $wpdb->insert(
             $wpdb->prefix.'simple_reservation_reservations',
@@ -113,8 +137,9 @@ class Frontend extends BaseController {
     }
 
     function delete_reservation( $request ) {
-        // TODO: Add room_id to query
-        // TODO: Check authentication
+        if ( ! is_user_logged_in() ) {
+            return new WP_Error( 'not_authorized', 'Du bist nicht angemeldet', [ 'status' => 401 ] );
+        }
 
         $room_id = $request['room_id'];
         $reservation_id = $request['reservation_id'];
@@ -123,7 +148,10 @@ class Frontend extends BaseController {
 
         $result = $wpdb->delete(
             $wpdb->prefix.'simple_reservation_reservations',
-            [ 'id'      => $reservation_id ],
+            [
+                'id'      => $reservation_id,
+                'user_id' => wp_get_current_user()->ID  // only delete own reservations
+            ],
             [ '%d', '%d' ]
         );
 
@@ -144,5 +172,29 @@ class Frontend extends BaseController {
         } else {
             return new WP_Error( 'database_error', 'Beim Entfernen der Reservierung ist ein Problem aufgetreten.', [ 'status' => 500 ] );
         }
+    }
+
+    function get_max_length( $room_id, $date, $time_id ) {
+        global $wpdb;
+
+        $reservations_after_reservation = $wpdb->get_results( "
+            SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
+            WHERE
+                room_id=$room_id
+                AND date='$date'
+                AND time_id>$time_id
+        ", OBJECT );
+
+        $max_lengths = [];
+
+        // Until end of day
+        $max_lengths[] = 10 - $time_id;
+
+        // Until next lesson
+        foreach ( $reservations_after_reservation as $reservation ) {
+            $max_lengths[] = $reservation->time_id - $time_id;
+        }
+
+        return min( $max_lengths );
     }
 }
