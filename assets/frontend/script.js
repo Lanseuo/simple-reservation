@@ -203,6 +203,9 @@ Vue.component('period', {
             this.service.addReservation(this.room.id, this.day.date, this.time.id, this.description, this.length)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
+
+                    // Close modal
+                    document.getElementById('TB_closeWindowButton').click();
                 })
                 .catch(e => {
                     console.error(e)
