@@ -51,7 +51,6 @@ class Frontend extends BaseController {
         if ( current_user_can( 'manage_options' ) ) {
             $is_admin = true;
             $users = array_map([$this, "user_id_and_name_callback"], get_users());
-
         } else {
             $is_admin = false;
             $users = [];
@@ -178,15 +177,23 @@ class Frontend extends BaseController {
         $room_id = $request['room_id'];
         $reservation_id = $request['reservation_id'];
 
+        if ( current_user_can( 'manage_options' ) ) {
+            $where = [ 'id' => $reservation_id ];
+            $where_format = [ '%d' ];
+        } else {
+            $where = [
+                'id'      => $reservation_id,
+                'user_id' => wp_get_current_user()->ID  // only delete own reservations
+            ];
+            $where_format = [ '%d', '%d' ];
+        }
+
         global $wpdb;
 
         $result = $wpdb->delete(
             $wpdb->prefix.'simple_reservation_reservations',
-            [
-                'id'      => $reservation_id,
-                'user_id' => wp_get_current_user()->ID  // only delete own reservations
-            ],
-            [ '%d', '%d' ]
+            $where,
+            $where_format
         );
 
         $reservations_results = $wpdb->get_results( "

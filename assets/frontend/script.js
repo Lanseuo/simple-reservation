@@ -267,7 +267,7 @@ Vue.component('period', {
         <div v-if="loading" class="period">
             <spinner small></spinner>
         </div>
-        <div v-else-if="reservation && showPeriod" class="period reserved deletable remove-style" @click="deleteReservation" :style="'grid-row: span ' + reservation.length">
+        <div v-else-if="reservation && showPeriod" class="period reserved remove-style" :class="{ deletable: canDelete }" @click="deleteReservation" :style="'grid-row: span ' + reservation.length">
             <div class="content">
                 <p><strong>{{ reservation.user }}</strong></p>
                 <p>{{ reservation.description }}</p>
@@ -352,6 +352,10 @@ Vue.component('period', {
         },
 
         deleteReservation() {
+            if (!this.canDelete) {
+                return
+            }
+
             this.loading = true
 
             this.$store.state.service.deleteReservation(this.room.id, this.reservation.id)
@@ -404,6 +408,10 @@ Vue.component('period', {
             maxLengths.push(10 - this.time.id)
 
             return Math.min(...maxLengths)
+        },
+
+        canDelete() {
+            return this.$store.state.info.is_admin || this.reservation.userId == this.$store.state.info.user_id
         }
     }
 })
