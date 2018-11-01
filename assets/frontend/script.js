@@ -173,7 +173,7 @@ Vue.component('period', {
 
                     <div class="row">
                         <p>Länge</p>
-                        <input v-model="length" type="number" value="1" min="1" max="room.max_length">
+                        <input v-model="length" type="number" value="1" min="1" :max="maxLength">
                     </div>
 
                     <div class="row">
@@ -242,6 +242,22 @@ Vue.component('period', {
 
         periodKey() {
             return this.$vnode.key
+        },
+
+        maxLength() {
+            let maxLengths = []
+
+            let reservationsAfter = this.reservations.filter(reservation => (
+                reservation.date == this.day.date && reservation.timeId > this.time.id
+            ))
+            reservationsAfter.forEach(reservation => {
+                maxLengths.push(reservation.timeId - this.time.id)
+            })
+
+            // Until end of day
+            maxLengths.push(10 - this.time.id)
+
+            return Math.min(...maxLengths)
         }
     }
 })
