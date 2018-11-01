@@ -8,6 +8,26 @@ class SimpleReservationService {
                 'X-WP-Nonce': window.simpleReservationNonce
             }
         })
+
+        this.api.interceptors.response.use(response => {
+            if (response.data.message) {
+                simpleReservationStore.dispatch('showNotice', { message: response.data.message, type: 'success' })
+            }
+
+            return response
+        }, e => {
+            console.log(e)
+
+            if (!e.response) {
+                simpleReservationStore.dispatch('showNotice', { message: 'Es konnte keine Verbindung zum Server hergestellt werden', type: 'error' })
+            } else {
+                simpleReservationStore.dispatch('showNotice', { message: e.response.data.message, type: 'error' })
+            }
+
+            return Promise.reject(e)
+        })
+
+
     }
 
     info() {

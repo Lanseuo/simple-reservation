@@ -1,3 +1,18 @@
+Vue.component('notice', {
+    template: `
+        <div class="notice" :class="$store.state.notice.type" v-show="$store.state.notice.visible">
+            <p>{{ $store.state.notice.message }}</p>
+            <span @click="close" class="dashicons dashicons-no-alt"></span>
+        </div>
+    `,
+
+    methods: {
+        close() {
+            this.$store.dispatch('hideNotice')
+        }
+    }
+})
+
 let app = new Vue({
     el: '#simple-reservation-app',
 
@@ -213,10 +228,11 @@ Vue.component('period', {
                     this.$emit('updatereservations', response.data.reservations)
 
                     // Close modal
-                    document.getElementById('TB_closeWindowButton').click();
+                    document.getElementById('TB_closeWindowButton').click()
                 })
                 .catch(e => {
-                    console.error(e)
+                    // Close modal
+                    document.getElementById('TB_closeWindowButton').click()
                 })
         },
 
