@@ -21,14 +21,19 @@ class Frontend extends BaseController {
                 'callback' => [$this, 'get_rooms']
             ]);
 
-            register_rest_route( 'simplereservation' , '/reservations/(?P<room_id>\d+)', [
+            register_rest_route( 'simplereservation' , '/rooms/(?P<room_id>\d+)/reservations', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_reservations']
             ]);
 
-            register_rest_route( 'simplereservation' , '/reservations', [
+            register_rest_route( 'simplereservation' , '/rooms/(?P<room_id>\d+)/reservations', [
                 'methods' => 'POST',
                 'callback' => [$this, 'add_reservation']
+            ]);
+
+            register_rest_route( 'simplereservation' , '/rooms/(?P<room_id>\d+)/reservations/(?P<reservation_id>\d+)', [
+                'methods' => 'DELETE',
+                'callback' => [$this, 'delete_reservation']
             ]);
         });
     }
@@ -96,7 +101,7 @@ class Frontend extends BaseController {
             WHERE room_id=$room_id
         ", OBJECT );
 
-        if ($result && $reservations_results) {
+        if ( $result && $reservations_results ) {
             return [
                 'code'         => 'success',
                 'message'      => 'Die Reservierung wurde hinzugefügt.',
@@ -104,6 +109,40 @@ class Frontend extends BaseController {
             ];
         } else {
             return new WP_Error( 'database_error', 'Beim Hinzufügen der Reservierung ist ein Problem aufgetreten.', [ 'status' => 500 ] );
+        }
+    }
+
+    function delete_reservation( $request ) {
+        // TODO: Add room_id to query
+        // TODO: Check authentication
+
+        $room_id = $request['room_id'];
+        $reservation_id = $request['reservation_id'];
+
+        global $wpdb;
+
+        $result = $wpdb->delete(
+            $wpdb->prefix.'simple_reservation_reservations',
+            [ 'id'      => $reservation_id ],
+            [ '%d', '%d' ]
+        );
+
+        $reservations_results = $wpdb->get_results( "
+            SELECT {$wpdb->prefix}simple_reservation_reservations.*, {$wpdb->prefix}users.display_name as user
+            FROM {$wpdb->prefix}simple_reservation_reservations
+            JOIN {$wpdb->prefix}users
+            ON {$wpdb->prefix}simple_reservation_reservations.user_id = {$wpdb->prefix}users.ID
+            WHERE room_id=$room_id
+        ", OBJECT );
+
+        if ( $result && $reservations_results ) {
+            return [
+                'code'         => 'success',
+                'message'      => 'Die Reservierung wurde entfernt.',
+                'reservations' => $reservations_results
+            ];
+        } else {
+            return new WP_Error( 'database_error', 'Beim Entfernen der Reservierung ist ein Problem aufgetreten.', [ 'status' => 500 ] );
         }
     }
 }

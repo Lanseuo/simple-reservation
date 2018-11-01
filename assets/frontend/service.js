@@ -10,39 +10,24 @@ class SimpleReservationService {
         })
     }
 
-    async getRooms() {
-        try {
-            let response = await this.api.get('rooms')
-            return response.data.rooms
-
-        } catch (e) {
-            console.error(e)
-        }
+    getRooms() {
+        return this.api.get('rooms')
     }
 
-    async getReservations(roomId) {
-        try {
-            let response = await this.api.get(`reservations/${roomId}`)
-            return response.data.reservations
-
-        } catch (e) {
-            console.error(e)
-        }
+    getReservations(roomId) {
+        return this.api.get(`rooms/${roomId}/reservations`)
     }
 
-    async addReservation(roomId, date, timeId, description, length) {
-        try {
-            let response = await this.api.post('reservations', {
-                room_id: roomId,
-                date,
-                time_id: timeId,
-                description,
-                length
-            })
-            return response
+    addReservation(roomId, date, timeId, description, length) {
+        return this.api.post(`rooms/${roomId}/reservations`, {
+            date,
+            time_id: timeId,
+            description,
+            length
+        })
+    }
 
-        } catch (e) {
-            console.error(e)
-        }
+    deleteReservation(roomId, reservationId) {
+        return this.api.delete(`rooms/${roomId}/reservations/${reservationId}`)
     }
 }

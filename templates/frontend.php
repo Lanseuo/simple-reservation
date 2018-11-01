@@ -4,9 +4,11 @@
 ?>
 <div class="simple-reservation">
     <div id="simple-reservation-app">
-        <tabs :rooms="rooms" :room-id="room.id" @changeroom="changeRoom"></tabs>
-        <p v-show="loading">Loading ...</p>
-        <room :room="room" :service="service"></room>
+        <p v-if="loading">Loading ...</p>
+        <div v-else>
+            <tabs :rooms="rooms" :room-id="room.id" @changeroom="changeRoom"></tabs>
+            <room :room="room" :service="service"></room>
+        </div>
     </div>
 </div>
 

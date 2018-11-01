@@ -11,9 +11,9 @@ let app = new Vue({
     created() {
         this.loading = true
         this.service.getRooms()
-            .then(rooms => {
-                this.rooms = rooms
-                this.room = rooms[0]
+            .then(response => {
+                this.rooms = response.data.rooms
+                this.room = this.rooms[0]
                 this.loading = false
             })
             .catch(e => {
@@ -69,7 +69,8 @@ Vue.component('week-grid', {
                 <div class="day-topbar"><strong>{{ day.weekday }}</strong></div>
                 <period
                     v-for="time in times"
-                    :day="day" :time="time"
+                    :day="day"
+                    :time="time"
                     :room="room"
                     :reservations="reservations"
                     :service="service"
@@ -110,8 +111,8 @@ Vue.component('week-grid', {
 
     created() {
         this.service.getReservations(this.room.id)
-            .then(reservations => {
-                this.reservations = reservations
+            .then(response => {
+                this.updateReservations(response.data.reservations)
             })
             .catch(e => {
                 console.error(e)
@@ -120,25 +121,31 @@ Vue.component('week-grid', {
 
     methods: {
         updateReservations(reservations) {
-            this.reservations = reservations
-        }
+            this.reservations = reservations.map(reservation => ({
+                id: reservation.id,
+                date: reservation.date,
+                description: reservation.description,
+                userId: reservation.user_id,
+                roomId: reservation.room_id,
+                timeId: parseInt(reservation.time_id),
+                length: parseInt(reservation.length),
+                user: reservation.user
+            }))
+        },
     }
 })
 
 Vue.component('period', {
     template: `
-        <form v-if="reservation" class="period reserved deletable remove-style" :style="'grid-row: span ' + reservation.length">
-            <button>
-                <div class="content">
-                    <p><strong>{{ reservation.user }}</strong></p>
-                    <p>{{ reservation.description }}</p>
-                </div>
-                <span class="delete-symbol dashicons dashicons-trash"></span>
-            </button>
-        </form>
-        <a v-else class="period free thickbox" :href="'#TB_inline?width=600&height=550&inlineId=' + periodKey">
+        <div v-if="reservation && showPeriod" class="period reserved deletable remove-style" @click="deleteReservation" :style="'grid-row: span ' + reservation.length">
+            <div class="content">
+                <p><strong>{{ reservation.user }}</strong></p>
+                <p>{{ reservation.description }}</p>
+            </div>
+            <span class="delete-symbol dashicons dashicons-trash"></span>
+        </div>
+        <a v-else-if="showPeriod" class="period free thickbox" :href="'#TB_inline?width=600&height=550&inlineId=' + periodKey">
             <span class="add-symbol">+</span>
-
             <!-- Thickbox -->
             <div class="modal" :id="periodKey" style="display:none;">
                 <div class="simple-reservation-modal">
@@ -200,14 +207,37 @@ Vue.component('period', {
                 .catch(e => {
                     console.error(e)
                 })
+        },
+
+        deleteReservation() {
+            this.service.deleteReservation(this.room.id, this.reservation.id)
+                .then(response => {
+                    this.$emit('updatereservations', response.data.reservations)
+                })
+                .catch(e => {
+                    console.error(e)
+                })
         }
     },
 
     computed: {
         reservation() {
             return this.reservations.filter(reservation => (
-                reservation.date == this.day.date && reservation.time_id == this.time.id
+                reservation.date == this.day.date && reservation.timeId == this.time.id
             ))[0]
+        },
+
+        showPeriod() {
+            // Don't show period if period before has span > 1
+            let reservationsBefore = this.reservations.filter(reservation => (
+                reservation.date == this.day.date && reservation.timeId < this.time.id
+            ))
+
+            let overlappingReservations = reservationsBefore.filter(reservation => {
+                return reservation.timeId + reservation.length > this.time.id
+            })
+
+            return overlappingReservations.length == 0
         },
 
         periodKey() {
