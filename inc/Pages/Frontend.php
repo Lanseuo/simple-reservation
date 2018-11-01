@@ -48,9 +48,20 @@ class Frontend extends BaseController {
             return new WP_Error( 'not_authorized', 'Zugriff verweigert.', [ 'status' => 401 ] );
         }
 
+        if ( current_user_can( 'manage_options' ) ) {
+            $is_admin = true;
+            $users = array_map([$this, "user_id_and_name_callback"], get_users());
+
+        } else {
+            $is_admin = false;
+            $users = [];
+        }
+
         return [
             'user_id'  => wp_get_current_user()->ID,
-            'username' => wp_get_current_user()->data->display_name
+            'username' => wp_get_current_user()->data->display_name,
+            'is_admin' => $is_admin,
+            'users'    => $users
         ];
     }
 
@@ -120,6 +131,13 @@ class Frontend extends BaseController {
             return new WP_Error( 'malform', 'Überschneidende Reservierungen sind nicht möglich.', [ 'status' => 400 ] );
         }
 
+        if ( current_user_can( 'manage_options' ) ) {
+            // TODO: Check whether user id exists
+            $user_id = $request["user_id"];
+        } else {
+            $user_id = wp_get_current_user()->ID;
+        }
+
         $result = $wpdb->insert(
             $wpdb->prefix.'simple_reservation_reservations',
             [
@@ -127,7 +145,7 @@ class Frontend extends BaseController {
                 'date'        => $date,
                 'time_id'     => $time_id,
                 'description' => $description,
-                'user_id'     => wp_get_current_user()->ID,
+                'user_id'     => $user_id,
                 'length'      => $length
             ],
             [ '%d', '%s', '%d', '%s', '%d' ]
@@ -212,5 +230,12 @@ class Frontend extends BaseController {
         }
 
         return min( $max_lengths );
+    }
+
+    function user_id_and_name_callback( $user ) {
+        return [
+            'id' => $user->ID,
+            'name' => $user->display_name
+        ];
     }
 }

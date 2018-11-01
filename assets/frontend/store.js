@@ -1,10 +1,7 @@
 const simpleReservationStore = new Vuex.Store({
     state: {
         service: new SimpleReservationService(window.wpApiBaseUrl),
-        user: {
-            id: null,
-            username: null
-        },
+        info: {},
         notice: {
             visible: false,
             message: '',
@@ -13,8 +10,8 @@ const simpleReservationStore = new Vuex.Store({
     },
 
     mutations: {
-        setUser(state, user) {
-            state.user = user
+        setInfo(state, info) {
+            state.info = info
         },
         setNotice(state, notice) {
             state.notice = notice
@@ -22,8 +19,8 @@ const simpleReservationStore = new Vuex.Store({
     },
 
     actions: {
-        setUser({ commit }, user) {
-            commit('setUser', user)
+        setInfo({ commit }, info) {
+            commit('setInfo', info)
         },
         showNotice({ commit }, notice) {
             commit('setNotice', {

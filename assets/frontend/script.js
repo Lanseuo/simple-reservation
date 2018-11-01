@@ -38,7 +38,7 @@ let app = new Vue({
 
         this.$store.state.service.info()
             .then(response => {
-                this.$store.dispatch('setUser', { id: response.data.user_id, username: response.data.username })
+                this.$store.dispatch('setInfo', response.data)
             })
             .catch(e => {
 
@@ -254,7 +254,9 @@ Vue.component('period', {
 
                     <div class="row">
                         <p>Name</p>
-                        <input :value="$store.state.user.username" disabled type="text">
+                        <select v-model="userId" :disabled="!$store.state.info.is_admin">
+                            <option v-for="user in $store.state.info.users" :value="user.id">{{ user.name }}</option>
+                        </select>
                     </div>
 
                     <div class="row">
@@ -295,13 +297,14 @@ Vue.component('period', {
     data() {
         return {
             description: '',
-            length: 1
+            length: 1,
+            userId: null
         }
     },
 
     methods: {
         addReservation() {
-            this.$store.state.service.addReservation(this.room.id, this.day.date, this.time.id, this.description, this.length)
+            this.$store.state.service.addReservation(this.room.id, this.day.date, this.time.id, this.userId, this.description, this.length)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
 

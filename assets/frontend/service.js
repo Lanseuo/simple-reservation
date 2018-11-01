@@ -42,10 +42,11 @@ class SimpleReservationService {
         return this.api.get(`rooms/${roomId}/reservations`)
     }
 
-    addReservation(roomId, date, timeId, description, length) {
+    addReservation(roomId, date, timeId, userId, description, length) {
         return this.api.post(`rooms/${roomId}/reservations`, {
             date,
             time_id: timeId,
+            user_id: userId,
             description,
             length
         })
