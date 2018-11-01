@@ -90,7 +90,10 @@ Vue.component('week-grid', {
             </div>
 
             <template v-for="day in days">
-                <div class="day-topbar"><strong>{{ day.weekday }}</strong></div>
+                <div class="day-topbar">
+                    <p><strong>{{ day.weekday }}</strong></p>
+                    <p>{{ day.date | beautifulDate }}</p>
+                </div>
                 <period
                     v-for="time in times"
                     :day="day"
@@ -121,13 +124,6 @@ Vue.component('week-grid', {
                 { id: 8, name: '9. Stunde', description: '15.50 - 16:35 Uhr' },
                 { id: 9, name: '10. Stunde', description: '16.40 - 17:25 Uhr' }
             ],
-            days: [
-                { date: '20181029', weekday: 'Montag' },
-                { date: '20181030', weekday: 'Dienstag' },
-                { date: '20181031', weekday: 'Mittwoch' },
-                { date: '20181101', weekday: 'Donnerstag' },
-                { date: '20181102', weekday: 'Freitag' },
-            ],
             reservations: []
         }
     },
@@ -155,6 +151,45 @@ Vue.component('week-grid', {
                 user: reservation.user
             }))
         },
+    },
+
+    computed: {
+        days() {
+            function pad(n) {
+                n = n + ''
+                return n.length >= 2 ? n : new Array(2 - n.length + 1).join('0') + n
+            }
+
+            let result = []
+
+            function appendDate(d) {
+                let weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+
+                result.push({
+                    date: `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`,
+                    weekday: weekdays[d.getDay()]
+                })
+            }
+
+            // First day of week
+            let currentDay = new Date();
+            currentDay.setDate(currentDay.getDate() - (currentDay.getDay() + 6) % 7)
+
+            appendDate(currentDay)
+
+            for (let i = 0; i < 4; i++) {
+                currentDay.setDate(currentDay.getDate() + 1)
+                appendDate(currentDay)
+            }
+
+            return result
+        }
+    },
+
+    filters: {
+        beautifulDate(date) {
+            return `${date.slice(6, 8)}.${date.slice(4, 6)}.${date.slice(0, 4)}`
+        }
     }
 })
 
