@@ -13,6 +13,29 @@ Vue.component('notice', {
     }
 })
 
+Vue.component('spinner', {
+    template: `
+        <div class="sk-fading-circle" :class="{ small }">
+            <div class="sk-circle1 sk-circle"></div>
+            <div class="sk-circle2 sk-circle"></div>
+            <div class="sk-circle3 sk-circle"></div>
+            <div class="sk-circle4 sk-circle"></div>
+            <div class="sk-circle5 sk-circle"></div>
+            <div class="sk-circle6 sk-circle"></div>
+            <div class="sk-circle7 sk-circle"></div>
+            <div class="sk-circle8 sk-circle"></div>
+            <div class="sk-circle9 sk-circle"></div>
+            <div class="sk-circle10 sk-circle"></div>
+            <div class="sk-circle11 sk-circle"></div>
+            <div class="sk-circle12 sk-circle"></div>
+        </div>
+    `,
+
+    props: {
+        small: Boolean
+    }
+})
+
 let app = new Vue({
     el: '#simple-reservation-app',
 
@@ -26,22 +49,22 @@ let app = new Vue({
 
     created() {
         this.loading = true
-        this.$store.state.service.getRooms()
-            .then(response => {
-                this.rooms = response.data.rooms
-                this.room = this.rooms[0]
-                this.loading = false
-            })
-            .catch(e => {
-                this.loading = false
-            })
-
         this.$store.state.service.info()
             .then(response => {
                 this.$store.dispatch('setInfo', response.data)
+
+                this.$store.state.service.getRooms()
+                    .then(response => {
+                        this.rooms = response.data.rooms
+                        this.room = this.rooms[0]
+                        this.loading = false
+                    })
+                    .catch(e => {
+                        this.loading = false
+                    })
             })
             .catch(e => {
-
+                this.loading = false
             })
     },
 
@@ -85,7 +108,7 @@ Vue.component('room', {
             <div class="week">
                 <div class="header">
                     <span @click="previousWeek" class="dashicons dashicons-arrow-left-alt2"></span>
-                    <p>Reservierungen {{ startDayOfWeek.getDate() }}</p>
+                    <p>Reservierungen</p>
                     <span @click="nextWeek" class="dashicons dashicons-arrow-right-alt2"></span>
                 </div>
                 <week-grid :room="room" :start-day-of-week="startDayOfWeek"></week-grid>
@@ -125,8 +148,8 @@ Vue.component('room', {
 
 Vue.component('week-grid', {
     template: `
-        <div class="week-grid">
-            <p v-if="loading">Loading ...</p>
+        <spinner v-if="loading"></spinner>
+        <div v-else class="week-grid">
             <div class="day-topbar empty"></div>
             <div class="time-sidebar" v-for="time in times">
                 <p><strong>{{ time.name }}</strong></p>
@@ -173,12 +196,15 @@ Vue.component('week-grid', {
     },
 
     created() {
+        this.loading = true
         this.$store.state.service.getReservations(this.room.id)
             .then(response => {
+                this.loading = false
                 this.updateReservations(response.data.reservations)
             })
             .catch(e => {
                 console.error(e)
+                this.loading = false
             })
     },
 
@@ -238,7 +264,10 @@ Vue.component('week-grid', {
 
 Vue.component('period', {
     template: `
-        <div v-if="reservation && showPeriod" class="period reserved deletable remove-style" @click="deleteReservation" :style="'grid-row: span ' + reservation.length">
+        <div v-if="loading" class="period">
+            <spinner small></spinner>
+        </div>
+        <div v-else-if="reservation && showPeriod" class="period reserved deletable remove-style" @click="deleteReservation" :style="'grid-row: span ' + reservation.length">
             <div class="content">
                 <p><strong>{{ reservation.user }}</strong></p>
                 <p>{{ reservation.description }}</p>
@@ -296,34 +325,43 @@ Vue.component('period', {
 
     data() {
         return {
+            loading: false,
             description: '',
             length: 1,
-            userId: null
+            userId: this.$store.state.info.user_id
         }
     },
 
     methods: {
         addReservation() {
+            console.log('addReservation()');
+
+
+            // Close modal
+            this.loading = true
+            document.getElementById('TB_closeWindowButton').click()
+
             this.$store.state.service.addReservation(this.room.id, this.day.date, this.time.id, this.userId, this.description, this.length)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
-
-                    // Close modal
-                    document.getElementById('TB_closeWindowButton').click()
+                    this.loading = false
                 })
                 .catch(e => {
-                    // Close modal
-                    document.getElementById('TB_closeWindowButton').click()
+                    this.loading = false
                 })
         },
 
         deleteReservation() {
+            this.loading = true
+
             this.$store.state.service.deleteReservation(this.room.id, this.reservation.id)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
+                    this.loading = false
                 })
                 .catch(e => {
                     console.error(e)
+                    this.loading = false
                 })
         }
     },

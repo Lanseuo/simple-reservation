@@ -5,7 +5,7 @@
 <div class="simple-reservation">
     <div id="simple-reservation-app">
         <notice></notice>
-        <p v-if="loading">Loading ...</p>
+        <spinner v-if="loading"></spinner>
         <div v-else>
             <tabs :rooms="rooms" :room-id="room.id" @changeroom="changeRoom"></tabs>
             <room :room="room" :key="room.id"></room>

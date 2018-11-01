@@ -20,8 +20,10 @@ class SimpleReservationService {
 
             if (!e.response) {
                 simpleReservationStore.dispatch('showNotice', { message: 'Es konnte keine Verbindung zum Server hergestellt werden', type: 'error' })
-            } else {
+            } else if (e.response.data.message) {
                 simpleReservationStore.dispatch('showNotice', { message: e.response.data.message, type: 'error' })
+            } else {
+                simpleReservationStore.dispatch('showNotice', { message: 'Es ist ein Fehler aufgetreten.', type: 'error' })
             }
 
             return Promise.reject(e)
