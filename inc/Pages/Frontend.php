@@ -9,7 +9,7 @@ use WP_Error;
 
 class Frontend extends BaseController {
     function render_simple_reservation( $attr ) {
-        return require_once( "$this->plugin_path/templates/frontend.php" );
+        require_once( "$this->plugin_path/templates/frontend.php" );
     }
 
     function register() {
