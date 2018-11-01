@@ -1,3 +1,7 @@
+:root {
+    --simple-reservation-blue: #337ab7;
+}
+
 .entry-content {
     /* For development */
     width: 100% !important;
@@ -58,7 +62,7 @@ button.simple-reservation.primary {
 }
 
 .simple-reservation .tabs li a {
-    color: #337ab7;
+    color: var(--simple-reservation-blue);
     text-decoration: none !important;
     margin-right: 2px;
     line-height: 1.42857143;
@@ -128,6 +132,10 @@ button.simple-reservation.primary {
     border: 1px solid #eee;
     display: grid;
     place-content: center;
+}
+
+.simple-reservation .week .week-grid .day-topbar.is-today p {
+    color: var(--simple-reservation-blue);
 }
 
 .simple-reservation .week .week-grid .time-sidebar p,

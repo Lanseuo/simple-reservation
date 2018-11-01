@@ -157,7 +157,7 @@ Vue.component('week-grid', {
             </div>
 
             <template v-for="day in days">
-                <div class="day-topbar">
+                <div class="day-topbar" :class="{ 'is-today': day.isToday }">
                     <p><strong>{{ day.weekday }}</strong></p>
                     <p>{{ day.date | beautifulDate }}</p>
                 </div>
@@ -237,7 +237,8 @@ Vue.component('week-grid', {
 
                 result.push({
                     date: `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`,
-                    weekday: weekdays[d.getDay()]
+                    weekday: weekdays[d.getDay()],
+                    isToday: d.toDateString() == new Date().toDateString()
                 })
             }
 
