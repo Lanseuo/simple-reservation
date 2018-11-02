@@ -390,9 +390,8 @@ Vue.component('period', {
 
         showPeriod() {
             // Don't show period if period before has span > 1
-            let reservationsBefore = this.reservations.filter(reservation => (
-                reservation.date == this.day.date && reservation.timeId < this.time.id
-            ))
+            let reservationsOnDay = simpleReservationGetReservation(this.reservations, this.day.date, null, true)
+            let reservationsBefore = reservationsOnDay.filter(reservation => reservation.timeId < this.time.id)
 
             let overlappingReservations = reservationsBefore.filter(reservation => {
                 return reservation.timeId + reservation.length > this.time.id
@@ -408,9 +407,9 @@ Vue.component('period', {
         maxLength() {
             let maxLengths = []
 
-            let reservationsAfter = this.reservations.filter(reservation => (
-                reservation.date == this.day.date && reservation.timeId > this.time.id
-            ))
+            let reservationsOnDay = simpleReservationGetReservation(this.reservations, this.day.date, null, true)
+
+            let reservationsAfter = reservationsOnDay.filter(reservation => reservation.timeId > this.time.id)
             reservationsAfter.forEach(reservation => {
                 maxLengths.push(reservation.timeId - this.time.id)
             })
