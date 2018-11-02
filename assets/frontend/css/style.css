@@ -167,6 +167,16 @@ button.simple-reservation.primary {
     text-decoration: none;
 }
 
+.simple-reservation .week .period .content {
+    overflow: hidden;
+}
+
+.simple-reservation .week .period .content p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .simple-reservation .week .period.reserved button {
     cursor: auto;
 }

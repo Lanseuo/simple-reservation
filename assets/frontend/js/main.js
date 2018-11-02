@@ -270,6 +270,7 @@ Vue.component('period', {
             :class="{ deletable: canDelete }"
             @click="deleteReservation"
             :style="'grid-row: span ' + reservation.length"
+            :title="reservation.description"
         >
             <div class="content">
                 <p><strong>{{ reservation.user }}</strong></p>
