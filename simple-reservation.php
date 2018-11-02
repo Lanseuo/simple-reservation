@@ -40,23 +40,17 @@ SOFTWARE.
 
 defined( 'ABSPATH' ) or die;
 
-if ( file_exists( dirname(__FILE__) . '/vendor/autoload.php' ) ) {
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
     require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
-// use Inc\Base\Activate;
-// use Inc\Base\Deactivate;
+register_activation_hook( __FILE__, 'activate_simple_reservation_plugin' );
+register_deactivation_hook( __FILE__, 'deactivate_simple_reservation_plugin' );
 
-// register_activation_hook( __FILE__, ['Activate', 'activate'] );
-// register_deactivation_hook( __FILE__, ['Deactivate', 'deactivate'] );
-
-register_activation_hook( __FILE__, 'activate_alecaddd_plugin' );
-register_deactivation_hook( __FILE__, 'deactivate_alecaddd_plugin' );
-
-function activate_alecaddd_plugin() {
+function activate_simple_reservation_plugin() {
 	Inc\Base\Activate::activate();
 }
-function deactivate_alecaddd_plugin() {
+function deactivate_simple_reservation_plugin() {
 	Inc\Base\Deactivate::deactivate();
 }
 
