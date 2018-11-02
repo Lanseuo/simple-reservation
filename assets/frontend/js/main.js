@@ -278,9 +278,10 @@ Vue.component('period', {
 
                     <div class="row">
                         <p>Name</p>
-                        <select v-model="userId" :disabled="!$store.state.info.is_admin">
+                        <select v-if="$store.state.info.is_admin" v-model="userId" :disabled="!$store.state.info.is_admin">
                             <option v-for="user in $store.state.info.users" :value="user.id">{{ user.name }}</option>
                         </select>
+                        <input v-else :value="$store.state.info.username" disabled type="text">
                     </div>
 
                     <div class="row">
