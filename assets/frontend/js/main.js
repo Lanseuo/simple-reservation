@@ -261,10 +261,16 @@ Vue.component('week-grid', {
 
 Vue.component('period', {
     template: `
-        <div v-if="loading" class="period">
+        <div v-if="loading" class="period" :style="'grid-row: span ' + reservation.length">
             <spinner small></spinner>
         </div>
-        <div v-else-if="reservation && showPeriod" class="period reserved remove-style" :class="{ deletable: canDelete }" @click="deleteReservation" :style="'grid-row: span ' + reservation.length">
+        <div
+            v-else-if="reservation && showPeriod"
+            class="period reserved remove-style"
+            :class="{ deletable: canDelete }"
+            @click="deleteReservation"
+            :style="'grid-row: span ' + reservation.length"
+        >
             <div class="content">
                 <p><strong>{{ reservation.user }}</strong></p>
                 <p>{{ reservation.description }}</p>
@@ -302,9 +308,7 @@ Vue.component('period', {
 
                     <div v-if="repeatWeekly" class="row">
                         <p>Wochentag</p>
-                        <select v-model="repeatWeekday">
-                            <option v-for="(weekday, weekdayId) in weekdays" :value="weekdayId">{{ weekday }}</option>
-                        </select>
+                        <input :value="repeatWeekdayName" disabled type="text">
                     </div>
 
                     <div v-else class="row">
@@ -344,9 +348,13 @@ Vue.component('period', {
             length: 1,
             userId: this.$store.state.info.user_id,
             repeatWeekly: false,
-            repeatWeekday: 0,
-            weekdays: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
+            repeatWeekday: 0
         }
+    },
+
+    created() {
+        this.repeatWeekday = simpleReservationToJSDate(this.day.date).getDay() - 1
+        this.repeatWeekdayName = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'][this.repeatWeekday]
     },
 
     methods: {
