@@ -134,8 +134,7 @@ class Frontend extends BaseController {
             if ( $duplicate_reservations ) {
                 $dates = [];
                 foreach ( $duplicate_reservations as $reservation ) {
-                    // TODO: To beautiful date
-                    $dates[] = $reservation->date;
+                    $dates[] = Utils::to_beautiful_date( $reservation->date );
                 }
                 return new WP_Error( 'malform', 'Reservierung konnte nicht hinzugefügt werden, da sie sich mit Reservierungen an folgenden Tagen überschneidet: '.join(', ', $dates).'.', [ 'status' => 400 ] );
             }

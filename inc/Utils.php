@@ -9,9 +9,6 @@ use DateTime;
 
 class Utils extends BaseController {
     static function get_reservation( $room_id, $date, $time_id ) {
-        // TODO: Use get_weekday
-        $weekday = date('N', strtotime( str_replace('.', '-', $date ) ) ) - 1; // 0 is Monday
-
         global $wpdb;
 
         $reservations = $wpdb->get_results( "
@@ -23,6 +20,7 @@ class Utils extends BaseController {
                 AND time_id=$time_id
         ", OBJECT );
 
+        $weekday = self::get_weekday( $date );
         $repeating_reservations = $wpdb->get_results( "
             SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
             WHERE
@@ -53,8 +51,7 @@ class Utils extends BaseController {
         $results = [];
 
         foreach ( $reservations_with_similar_attributes as $reservation ) {
-            // TODO: Use get_weekday
-            $weekday = date('N', strtotime( str_replace('.', '-', $reservation->date ) ) ) - 1; // 0 is Monday
+            $weekday = self::get_weekday( $reservation->date );
 
             if ( $weekday == $repeat_weekday ) {
                 $results[] = $reservation;
@@ -64,6 +61,10 @@ class Utils extends BaseController {
     }
 
     static function get_weekday( $date ) {
-        return date('N', strtotime( str_replace('.', '-', $date ) ) ) - 1; // 0 is Monday
+        return date('N', strtotime( $date ) ) - 1; // 0 is Monday
+    }
+
+    static function to_beautiful_date( $date ) {
+        return substr( $date , 6 ).'.'.substr ( $date, 4, 2 ).'.'.substr ( $date, 0, 4 );
     }
 }
