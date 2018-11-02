@@ -40,3 +40,23 @@
     box-shadow: 0 1px 0 red;
     border-color: red;
 }
+
+.simple-reservation.about .info-box {
+    background: #e83745;
+    color: white;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    place-items: center start;
+}
+
+.simple-reservation.about .info-box .dashicons {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+    padding: 20px;
+}
+
+.simple-reservation.about .info-box a {
+    color: white;
+
+}
