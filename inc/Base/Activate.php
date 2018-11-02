@@ -41,6 +41,8 @@ class Activate {
             user_id bigint(20) NOT NULL,
             room_id bigint(20) NOT NULL,
             length int DEFAULT 1 NOT NULL,
+            repeat_weekly bool DEFAULT false,
+            repeat_weekday int,
             PRIMARY KEY  (id)
         ) $charset_collate;";
         dbDelta( $reservations_sql );

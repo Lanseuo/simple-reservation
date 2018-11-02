@@ -218,7 +218,9 @@ Vue.component('week-grid', {
                 roomId: reservation.room_id,
                 timeId: parseInt(reservation.time_id),
                 length: parseInt(reservation.length),
-                user: reservation.user
+                user: reservation.user,
+                repeatWeekly: reservation.repeat_weekly === '1',
+                repeatWeekday: reservation.repeat_weekday
             }))
         },
     },
@@ -269,7 +271,7 @@ Vue.component('period', {
             </div>
             <span class="delete-symbol dashicons dashicons-trash"></span>
         </div>
-        <a v-else-if="showPeriod" class="period free thickbox" :href="'#TB_inline?width=600&height=550&inlineId=' + periodKey">
+        <a v-else-if="showPeriod" class="period free thickbox" :href="'#TB_inline?width=600&height=600&inlineId=' + periodKey">
             <span class="add-symbol">+</span>
             <!-- Thickbox -->
             <div class="modal" :id="periodKey" style="display:none;">
@@ -290,6 +292,21 @@ Vue.component('period', {
                     </div>
 
                     <div class="row">
+                        <p>Wiederholend</p>
+                        <label>
+                            <input v-model="repeatWeekly" type="checkbox">
+                            <span>wöchentlich</span>
+                        </label>
+                    </div>
+
+                    <div v-if="repeatWeekly" class="row">
+                        <p>Wochentag</p>
+                        <select v-model="repeatWeekday">
+                            <option v-for="(weekday, weekdayId) in weekdays" :value="weekdayId">{{ weekday }}</option>
+                        </select>
+                    </div>
+
+                    <div v-else class="row">
                         <p>Datum</p>
                         <input :value="day.date | beautifulDate " disabled type="text">
                     </div>
@@ -324,20 +341,20 @@ Vue.component('period', {
             loading: false,
             description: '',
             length: 1,
-            userId: this.$store.state.info.user_id
+            userId: this.$store.state.info.user_id,
+            repeatWeekly: false,
+            repeatWeekday: 0,
+            weekdays: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
         }
     },
 
     methods: {
         addReservation() {
-            console.log('addReservation()');
-
-
             // Close modal
             this.loading = true
             document.getElementById('TB_closeWindowButton').click()
 
-            this.$store.state.service.addReservation(this.room.id, this.day.date, this.time.id, this.userId, this.description, this.length)
+            this.$store.state.service.addReservation(this.room.id, this.day.date, this.time.id, this.userId, this.description, this.length, this.repeatWeekly, this.repeatWeekday)
                 .then(response => {
                     this.$emit('updatereservations', response.data.reservations)
                     this.loading = false
@@ -368,9 +385,7 @@ Vue.component('period', {
 
     computed: {
         reservation() {
-            return this.reservations.filter(reservation => (
-                reservation.date == this.day.date && reservation.timeId == this.time.id
-            ))[0]
+            return simpleReservationGetReservation(this.reservations, this.day.date, this.time.id)
         },
 
         showPeriod() {

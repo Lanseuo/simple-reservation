@@ -113,6 +113,16 @@ class Frontend extends BaseController {
         $description = $request['description'];
         $length = $request['length'];
 
+        $repeat_weekly = $request['repeat_weekly'];
+        $repeat_weekday = $request['repeat_weekday'];
+
+        // Don't store unnecessary information
+        if ( $repeat_weekly ) {
+            $date = '';
+        } else {
+            $repeat_weekday = '';
+        }
+
         // Avoid duplicate reservations
         $duplicate_reservations = $wpdb->get_results( "
             SELECT * FROM {$wpdb->prefix}simple_reservation_reservations
@@ -140,14 +150,16 @@ class Frontend extends BaseController {
         $result = $wpdb->insert(
             $wpdb->prefix.'simple_reservation_reservations',
             [
-                'room_id'     => $room_id,
-                'date'        => $date,
-                'time_id'     => $time_id,
-                'description' => $description,
-                'user_id'     => $user_id,
-                'length'      => $length
+                'room_id'        => $room_id,
+                'date'           => $date,
+                'time_id'        => $time_id,
+                'description'    => $description,
+                'user_id'        => $user_id,
+                'length'         => $length,
+                'repeat_weekly'  => $repeat_weekly,
+                'repeat_weekday' => $repeat_weekday 
             ],
-            [ '%d', '%s', '%d', '%s', '%d' ]
+            [ '%d', '%s', '%d', '%s', '%d', '%d', '%d' ]
         );
 
         $reservations_results = $wpdb->get_results( "

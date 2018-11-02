@@ -231,7 +231,8 @@ button.simple-reservation.primary {
 }
 
 .simple-reservation-modal .row p,
-.simple-reservation-modal .row input {
+.simple-reservation-modal .row input,
+.simple-reservation-modal .row select {
     font-size: 16px;
 }
 
@@ -241,11 +242,24 @@ button.simple-reservation.primary {
     font-weight: 800;
 }
 
-.simple-reservation-modal .row input {
+.simple-reservation-modal .row input,
+.simple-reservation-modal .row select {
     display: block;
     padding: 10px;
     border: 1px solid #bbb;
     border-radius: 3px;
+    background: white;
+}
+
+.simple-reservation-modal .row label {
+    font-weight: normal;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    place-items: center start;
+}
+
+.simple-reservation-modal .row input[type="checkbox"] {
+    display: inline;
 }
 
 .simple-reservation-modal .row input:focus {

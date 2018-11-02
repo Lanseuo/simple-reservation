@@ -44,13 +44,15 @@ class SimpleReservationService {
         return this.api.get(`rooms/${roomId}/reservations`)
     }
 
-    addReservation(roomId, date, timeId, userId, description, length) {
+    addReservation(roomId, date, timeId, userId, description, length, repeatWeekly, repeatWeekday) {
         return this.api.post(`rooms/${roomId}/reservations`, {
             date,
             time_id: timeId,
             user_id: userId,
             description,
-            length
+            length,
+            repeat_weekly: repeatWeekly,
+            repeat_weekday: repeatWeekday
         })
     }
 
