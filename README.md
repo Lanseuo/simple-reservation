@@ -22,6 +22,8 @@ cd .../wp-content/plugins
 git clone https://github.com/Lanseuo/simple-reservation.git
 cd simple-reservation
 composer install
+npm install
+gulp
 ```
 
 Go to the plugin area of your WordPress admin space and activate the plugin
@@ -49,6 +51,13 @@ To show the reservation site to the user, you have to add the following shortcod
 
 ```
 composer install
+npm install 
+```
+
+during development
+
+```
+gulp watch
 ```
 
 ## Meta
