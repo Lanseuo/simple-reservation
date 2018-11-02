@@ -268,6 +268,7 @@ Vue.component('period', {
             <div class="content">
                 <p><strong>{{ reservation.user }}</strong></p>
                 <p>{{ reservation.description }}</p>
+                <span v-if="reservation.repeatWeekly" class="repeat-icon dashicons dashicons-controls-repeat"></span>
             </div>
             <span class="delete-symbol dashicons dashicons-trash"></span>
         </div>

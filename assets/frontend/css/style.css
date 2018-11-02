@@ -132,6 +132,7 @@ button.simple-reservation.primary {
     border: 1px solid #eee;
     display: grid;
     place-content: center;
+    position: relative;
 }
 
 .simple-reservation .week .week-grid .day-topbar.is-today p {
@@ -179,10 +180,18 @@ button.simple-reservation.primary {
     color: white;
 }
 
+.simple-reservation .week .period.reserved .repeat-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 15px;
+}
+
 .simple-reservation .week .period.reserved.deletable:hover {
     background-color: rgb(228, 67, 67);
     cursor: pointer;
 }
+
 
 .simple-reservation .week .period.reserved.deletable:hover .content {
     display: none;
