@@ -1,0 +1,24 @@
+.simple-reservation .notice {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    place-items: center;
+    padding: 0 10px;
+}
+
+.simple-reservation .notice p {
+    margin: 10px !important;
+    color: white;
+}
+
+.simple-reservation .notice .dashicons {
+    cursor: pointer;
+    color: white;
+}
+
+.simple-reservation .notice.success {
+    background-color: #51f766;
+}
+
+.simple-reservation .notice.error {
+    background-color: #f75059;
+}

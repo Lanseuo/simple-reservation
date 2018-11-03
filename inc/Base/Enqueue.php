@@ -23,12 +23,12 @@ class Enqueue extends BaseController {
         }
         wp_enqueue_script( 'simple_reservation_axios', 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js' );
 
-        wp_enqueue_script( 'simple_reservation_script', $this->plugin_url . 'assets/frontend/dist/main.min.js', null, null, true );
         wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/frontend/dist/style.min.css' );
+        wp_enqueue_script( 'simple_reservation_script', $this->plugin_url . 'assets/frontend/dist/main.min.js', null, null, true );
     }
 
     function enqueue_admin() {
-        wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/admin/style.css' );
-        wp_enqueue_script( 'simple_reservation_script', $this->plugin_url . 'assets/admin/script.js' );
+        wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/admin/dist/style.min.css' );
+        wp_enqueue_script( 'simple_reservation_script', $this->plugin_url . 'assets/admin/dist/main.min.js', null, null, true );
     }
 }

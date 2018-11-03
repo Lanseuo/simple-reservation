@@ -1,0 +1,54 @@
+.simple-reservation .tabs {
+    margin: 20px 0px 22px;
+    visibility: visible;
+    border-bottom: 1px solid #ddd;
+    padding-left: 0;
+    margin-bottom: 20px;
+    list-style: none;
+    box-sizing: inherit;
+    float: left;
+    clear: left;
+    width: 100%;
+}
+
+.simple-reservation .tabs li {
+    float: left;
+    margin-bottom: -1px;
+    position: relative;
+    display: block;
+}
+
+.simple-reservation .tabs li a {
+    color: var(--simple-reservation-blue);
+    text-decoration: none !important;
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.simple-reservation .tabs li a:hover {
+    background: #f3f3f3;
+}
+
+.simple-reservation .tabs li.active a {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: rgb(221, 221, 221);
+    border-bottom-color: transparent;
+}
+
+.simple-reservation .tabs-content {
+    display: none;
+}
+
+.simple-reservation .tabs-content.active {
+    display: block;
+}

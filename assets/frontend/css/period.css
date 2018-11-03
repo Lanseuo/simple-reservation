@@ -1,0 +1,85 @@
+.simple-reservation .week .week-grid .time-sidebar,
+.simple-reservation .week .week-grid .day-topbar,
+.simple-reservation .week .week-grid .period {
+    min-height: 75px;
+    max-width: 1000px;
+    border: 1px solid #eee;
+    display: grid;
+    place-content: center;
+    position: relative;
+}
+
+.simple-reservation .week .week-grid .day-topbar.is-today p {
+    color: var(--simple-reservation-blue);
+}
+
+.simple-reservation .week .week-grid .time-sidebar p,
+.simple-reservation .week .week-grid .day-topbar p,
+.simple-reservation .week .week-grid .period p {
+    text-align: center;
+}
+
+.simple-reservation .week .week-grid .period.free .add-symbol {
+    display: none;
+}
+
+.simple-reservation .week .week-grid .period.free:hover {
+    background-color: rgb(113, 211, 113);
+    cursor: pointer;
+}
+
+.simple-reservation .week .period.free:hover .add-symbol {
+    display: inline;
+    color: white;
+    font-size: 3em;
+}
+
+.simple-reservation a.thickbox,
+.simple-reservation a.thickbox:hover {
+    box-shadow: none;
+    text-decoration: none;
+}
+
+.simple-reservation .week .period .content {
+    overflow: hidden;
+}
+
+.simple-reservation .week .period .content p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.simple-reservation .week .period.reserved button {
+    cursor: auto;
+}
+
+.simple-reservation .week .period.reserved.deletable button {
+    cursor: pointer;
+}
+
+.simple-reservation .week .period.reserved .delete-symbol {
+    display: none;
+    color: white;
+}
+
+.simple-reservation .week .period.reserved .repeat-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 15px;
+}
+
+.simple-reservation .week .period.reserved.deletable:hover {
+    background-color: rgb(228, 67, 67);
+    cursor: pointer;
+}
+
+
+.simple-reservation .week .period.reserved.deletable:hover .content {
+    display: none;
+}
+
+.simple-reservation .week .period.reserved.deletable:hover .delete-symbol {
+    display: inline-block;
+}

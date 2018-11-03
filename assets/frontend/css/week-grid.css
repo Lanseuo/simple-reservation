@@ -1,0 +1,23 @@
+.simple-reservation .week .header {
+    background: rgb(221, 221, 221);
+    padding: 5px 20px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    place-items: center;
+}
+
+.simple-reservation .week .header .dashicons {
+    cursor: pointer;
+}
+
+.simple-reservation .week .header .dashicons:hover {
+    color: gray;
+}
+
+.simple-reservation .week .week-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(11, 1fr);
+}

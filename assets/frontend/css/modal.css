@@ -1,0 +1,67 @@
+.simple-reservation-modal {
+    padding: 2px 15px 15px 15px;
+}
+
+.simple-reservation-modal h4 {
+    font-size: 23px;
+    font-weight: 800;
+    margin: 10px 0;
+}
+
+.simple-reservation-modal table {
+    border-collapse: collapse;
+}
+
+.simple-reservation-modal .row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.simple-reservation-modal .row:before, .simple-reservation-modal .row:after {
+    display: none;
+}
+
+.simple-reservation-modal .row:nth-of-type(5) {
+    border-bottom: none;
+}
+
+.simple-reservation-modal .row p,
+.simple-reservation-modal .row input,
+.simple-reservation-modal .row select {
+    font-size: 16px;
+}
+
+.simple-reservation-modal .row p {
+    align-self: center;
+    font-weight: 800;
+}
+
+.simple-reservation-modal .row input,
+.simple-reservation-modal .row select {
+    display: block;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    background: white;
+    width: 100%;
+}
+
+.simple-reservation-modal .row label {
+    font-weight: normal;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    place-items: center start;
+    grid-gap: 10px;
+}
+
+.simple-reservation-modal .row input[type="checkbox"] {
+    display: inline;
+    margin: 0;
+}
+
+.simple-reservation-modal .row input:focus {
+    color: #222;
+    border-color: #333;
+}
