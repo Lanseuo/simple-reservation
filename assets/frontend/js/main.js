@@ -103,7 +103,7 @@ Vue.component('tabs', {
 Vue.component('room', {
     template: `
         <div class="room">
-            <p>{{ room.description }}</p>
+            <p class="room-description">{{ room.description }}</p>
 
             <div class="week">
                 <div class="header">

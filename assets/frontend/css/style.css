@@ -7,6 +7,14 @@
     width: 100% !important;
 }
 
+#simple-reservation-app {
+    margin: 10px 0;
+}
+
+.simple-reservation p {
+    margin: 0 !important;
+}
+
 button.simple-reservation.primary {
     background: #cc3d34 !important;
     margin-right: 0 !important;
@@ -24,7 +32,7 @@ button.simple-reservation.primary {
 }
 
 .simple-reservation .notice p {
-    margin: 10px;
+    margin: 10px !important;
     color: white;
 }
 
@@ -96,6 +104,10 @@ button.simple-reservation.primary {
     display: block;
 }
 
+.simple-reservation .room-description {
+    margin-bottom: 15px !important;
+}
+
 .simple-reservation .week .header {
     background: rgb(221, 221, 221);
     padding: 5px 20px;
@@ -103,10 +115,6 @@ button.simple-reservation.primary {
     display: grid;
     grid-template-columns: auto 1fr auto;
     place-items: center;
-}
-
-.simple-reservation .week .header p {
-    margin: 0;
 }
 
 .simple-reservation .week .header .dashicons {
@@ -142,7 +150,6 @@ button.simple-reservation.primary {
 .simple-reservation .week .week-grid .time-sidebar p,
 .simple-reservation .week .week-grid .day-topbar p,
 .simple-reservation .week .week-grid .period p {
-    margin: 0;
     text-align: center;
 }
 
@@ -228,6 +235,10 @@ button.simple-reservation.primary {
     width: 100%;
 }
 
+.simple-reservation-modal {
+    padding: 2px 15px 15px 15px;
+}
+
 .simple-reservation-modal h4 {
     font-size: 23px;
     font-weight: 800;
@@ -245,6 +256,10 @@ button.simple-reservation.primary {
     padding: 10px 0;
 }
 
+.simple-reservation-modal .row:before, .simple-reservation-modal .row:after {
+    display: none;
+}
+
 .simple-reservation-modal .row:nth-of-type(5) {
     border-bottom: none;
 }
@@ -256,7 +271,6 @@ button.simple-reservation.primary {
 }
 
 .simple-reservation-modal .row p {
-    margin: 0;
     align-self: center;
     font-weight: 800;
 }
@@ -268,6 +282,7 @@ button.simple-reservation.primary {
     border: 1px solid #bbb;
     border-radius: 3px;
     background: white;
+    width: 100%;
 }
 
 .simple-reservation-modal .row label {
@@ -275,10 +290,12 @@ button.simple-reservation.primary {
     display: grid;
     grid-template-columns: auto 1fr;
     place-items: center start;
+    grid-gap: 10px;
 }
 
 .simple-reservation-modal .row input[type="checkbox"] {
     display: inline;
+    margin: 0;
 }
 
 .simple-reservation-modal .row input:focus {
