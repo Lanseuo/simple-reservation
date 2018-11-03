@@ -12,7 +12,6 @@
 
 <?php
     global $wpdb;
-
     $rooms = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms", OBJECT );
 
     foreach ($rooms as $room) {

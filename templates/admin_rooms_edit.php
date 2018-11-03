@@ -1,7 +1,6 @@
 <?php
     namespace Templates;
-    use Inc\Api\Callbacks\AdminCallbacks;
-
+    use Inc\Pages\Admin\AdminCallbacks;
     $admin_callbacks = new AdminCallbacks();
     
     $action_type = $_POST['action'] == 'start_edit_room' ? 'edit' : 'add';

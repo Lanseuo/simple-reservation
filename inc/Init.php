@@ -8,10 +8,12 @@ namespace Inc;
 final class Init {
     static function get_services() {
         return [
-            Pages\Admin::class,
-            Pages\Frontend::class,
-            Base\Enqueue::class,
-            Base\SettingsLinks::class
+            Ajax\Ajax::class,
+            Pages\Admin\AdminEnqueue::class,
+            Pages\Admin\Menu::class,
+            Pages\Admin\SettingsLinks::class,
+            Pages\Frontend\FrontendEnqueue::class,
+            Pages\Frontend\Shortcodes::class
         ];
     }
 

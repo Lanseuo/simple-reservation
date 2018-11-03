@@ -1,11 +1,3 @@
-<?php
-    namespace Templates;
-    use Inc\Api\Callbacks\AdminCallbacks;
-    
-    $admin_callbacks = new AdminCallbacks();
-    $admin_callbacks->delete_reservations_in_past();
-
-?>
 <div class="wrap">
     <h1>SimpleReservation</h1>
 

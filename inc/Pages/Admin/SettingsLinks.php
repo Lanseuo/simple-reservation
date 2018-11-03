@@ -2,9 +2,8 @@
 /**
  * @package SimpleReservation
  */
-namespace Inc\Base;
-
-use \Inc\Base\BaseController;
+namespace Inc\Pages\Admin;
+use Inc\Base\BaseController;
 
 class SettingsLinks extends BaseController {
     function register() {

@@ -2,7 +2,6 @@
 /**
  * @package SimpleReservation
  */
-
 namespace Inc\Base;
 
 class Deactivate {

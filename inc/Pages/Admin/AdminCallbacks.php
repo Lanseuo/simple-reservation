@@ -2,34 +2,10 @@
 /**
  * @package SimpleReservation
  */
-namespace Inc\Api\Callbacks;
-
+namespace Inc\Pages\Admin;
 use Inc\Base\BaseController;
 
-class AdminCallBacks extends BaseController {
-    function admin_general() {
-        return require_once( "$this->plugin_path/templates/admin.php" );
-    }
-
-    function admin_rooms() {
-        return require_once( "$this->plugin_path/templates/admin_rooms.php" );
-    }
-    
-    function admin_about() {
-        return require_once( "$this->plugin_path/templates/admin_about.php" );
-    }
-
-    function simple_reservation_settings( $input ) {
-        return $input;
-    }
-
-    function render_input_text( $args ) {
-        $option_id = $args['option_id'];
-        $placeholder = $args['placeholder'];
-        $value = esc_attr( get_option( $option_id ) );
-        echo '<input type="text" class="regular-text" name="'.$option_id.'" value="'.$value.'" placeholder="'.$placeholder.'">';
-    }
-
+class AdminCallbacks extends BaseController {
     function get_room( $id ) {
         global $wpdb;
         $rooms = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_rooms WHERE id = {$id}", OBJECT );
@@ -108,30 +84,6 @@ class AdminCallBacks extends BaseController {
             add_settings_error( 'simple_reservation', 'simple_reservation', 'Room was deleted.', 'updated' );
         } else {
             add_settings_error( 'simple_reservation', 'simple_reservation', 'There was an error during deleting room.', 'error' );
-        }
-    }
-
-    function delete_reservations_in_past() {
-        global $wpdb;
-        
-        $reservations = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}simple_reservation_reservations", OBJECT );
-
-        $now = new \DateTime();
-        $now->setTime(0, 0, 0, 0);
-
-        foreach ( $reservations as $reservation ) {
-            $parsed_date = date_parse( $reservation->date );
-            $date = new \DateTime();
-            $date->setDate( $parsed_date['year'], $parsed_date['month'], $parsed_date['day'] );
-            $date->setTime( 0, 0, 0, 0 );
-            
-            if ($date < $now) {
-                $wpdb->delete(
-                    $wpdb->prefix.'simple_reservation_reservations',
-                    [ 'id' => $reservation->id ],
-                    [ '%d']
-                );
-            }
         }
     }
 }

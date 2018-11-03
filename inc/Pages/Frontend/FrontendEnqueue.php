@@ -3,14 +3,12 @@
  * @package SimpleReservation
  */
 
-namespace Inc\Base;
+namespace Inc\Pages\Frontend;
+use Inc\Base\BaseController;
 
-use \Inc\Base\BaseController;
-
-class Enqueue extends BaseController {
+class FrontendEnqueue extends BaseController {
     function register() {
         add_action( 'wp_enqueue_scripts', [$this, 'enqueue_frontend'] );
-        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_admin'] );  
     }
 
     function enqueue_frontend() {
@@ -25,10 +23,5 @@ class Enqueue extends BaseController {
 
         wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/frontend/dist/style.min.css' );
         wp_enqueue_script( 'simple_reservation_script', $this->plugin_url . 'assets/frontend/dist/main.min.js', null, null, true );
-    }
-
-    function enqueue_admin() {
-        wp_enqueue_style( 'simple_reservation_style', $this->plugin_url . 'assets/admin/dist/style.min.css' );
-        wp_enqueue_script( 'simple_reservation_script', $this->plugin_url . 'assets/admin/dist/main.min.js', null, null, true );
     }
 }

@@ -1,7 +1,6 @@
 <?php
     namespace Templates;
-
-    use Inc\Api\Callbacks\AdminCallbacks;;
+    use Inc\Pages\Admin\AdminCallbacks;
 
     $admin_callbacks = new AdminCallbacks();
     $admin_callbacks->action();
