@@ -1,6 +1,6 @@
 {
   "name": "simple-reservation",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "This plugin makes reservations on your website very simple.",
   "main": "index.js",
   "scripts": {

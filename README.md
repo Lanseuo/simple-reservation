@@ -1,6 +1,6 @@
 # SimpleReservation
 
-![Docs](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)
+![Docs](https://img.shields.io/badge/version-1.0.0-blue.svg?style=flat-square)
 
 SimpleReservation is a WordPress that makes it easy to manage rooms and their reservations.
 
