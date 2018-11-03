@@ -261,7 +261,7 @@ Vue.component('week-grid', {
 
 Vue.component('period', {
     template: `
-        <div v-if="loading" class="period" :style="'grid-row: span ' + reservation.length">
+        <div v-if="loading" class="period" :style="reservation ? ('grid-row: span ' + reservation.length) : ''">
             <spinner small></spinner>
         </div>
         <div
